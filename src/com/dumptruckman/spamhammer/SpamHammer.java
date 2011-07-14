@@ -206,13 +206,7 @@ public class SpamHammer extends JavaPlugin {
         int samecount = 1;
         int mute = config.getInt(MUTE_LIMIT.toString(), 0);
         int kick = config.getInt(KICK_LIMIT.toString(), 0);
-        if (beenMuted(name) && !beenKicked(name)) {
-            kick = kick - mute;
-        }
         int ban = config.getInt(BAN_LIMIT.toString(), 0);
-        if (beenKicked(name)) {
-            ban = ban - kick;
-        }
         String lastMessage = null;
         for (Object m : playerChatHistory.get(name).toArray()) {
             String message = m.toString();
