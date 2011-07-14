@@ -224,11 +224,15 @@ public class SpamHammer extends JavaPlugin {
                 playerChatHistory.get(name).clear();
                 addChatMessage(name, message);
                 break;
+            } else if (mute != 0 && !beenMuted(name)) {
+                break;
             }
             if (kick != 0 && !beenKicked(name) && samecount >= kick) {
                 kickPlayer(name);
                 playerChatHistory.get(name).clear();
                 addChatMessage(name, message);
+                break;
+            } else if (kick != 0 && !beenKicked(name)) {
                 break;
             }
             if (ban != 0 && samecount >= ban) {

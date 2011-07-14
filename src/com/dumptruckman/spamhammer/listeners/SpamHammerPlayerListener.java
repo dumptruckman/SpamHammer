@@ -1,10 +1,10 @@
 package com.dumptruckman.spamhammer.listeners;
 
+import com.dumptruckman.spamhammer.Config.ConfigPath;
 import com.dumptruckman.spamhammer.SpamHammer;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
-import com.dumptruckman.spamhammer.Config.ConfigPath;
 
 /**
  * @author dumptruckman
