@@ -1,6 +1,6 @@
 package com.dumptruckman.spamhammer.listeners;
 
-import com.dumptruckman.spamhammer.Config.ConfigPath;
+import com.dumptruckman.spamhammer.config.ConfigPath;
 import com.dumptruckman.spamhammer.SpamHammer;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerListener;

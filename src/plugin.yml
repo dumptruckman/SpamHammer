@@ -1,4 +1,24 @@
 name: SpamHammer
 main: com.dumptruckman.spamhammer.SpamHammer
-version: 1.0
+version: 1.1
 author: dumptruckman
+
+commands:
+  spamunban:
+    description: Unbans a player banned by SpamHammer.
+    usage: |
+           /<command> <playername>
+           /<command> dumptruckman - unbans dumptruckman if he was banned by SpamHammer.
+    aliases: dc
+  spamunmute:
+    description: Unmutes a player banned by SpamHammer.
+    usage: |
+           /<command> <playername>
+           /<command> dumptruckman - unmutes dumptruckman if he was muted by SpamHammer.
+    aliases: dc
+  spamreset:
+    description: Resets a player's SpamHammer punishment level.
+    usage: |
+           /<command> <playername>
+           /<command> dumptruckman - Makes it like dumptruckman never spammed in the first place.
+    aliases: dc

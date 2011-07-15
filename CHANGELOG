@@ -1,0 +1,9 @@
+Version 1.1
+    Plugin actually works now.  Silly me.
+    Added a message option for the cool off timer.
+    Added spamunban command to unban players banned by SpamHammer.
+    Added spamunmute command to unmute players muted by SpamHammer.
+    Added spamreset command to reset the level of punish a player is at.
+
+Version 1.0
+    Initial Release!

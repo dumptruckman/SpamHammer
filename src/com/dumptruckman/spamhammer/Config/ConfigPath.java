@@ -1,4 +1,4 @@
-package com.dumptruckman.spamhammer.Config;
+package com.dumptruckman.spamhammer.config;
 
 /**
  * @author dumptruckman
@@ -13,7 +13,13 @@ public enum ConfigPath {
     KICK_MESSAGE ("Kick Message", "kick.message", "You have been kicked for spamming.  Keep it up and you'll be banned."),
     BAN_LIMIT ("Ban Limit", "ban.limit", 3),
     BAN_MESSAGE ("Ban Message", "ban.message", "You have been banned for spamming."),
-    COOL_OFF("Cool Off Time", "coolofftime", 300);
+    COOL_OFF("Cool Off Time", "cooloff.time", 300),
+    COOL_OFF_MESSAGE("Cool Off Message", "cooloff.message", "Spamming punishment reset.  Be nice!"),
+    UNMUTE_COMMAND_MESSAGE_SUCCESS ("Unmute Command Success Message", "commands.unmute.success", "Player has been unmuted."),
+    UNMUTE_COMMAND_MESSAGE_FAILURE ("Unmute Command Failure Message", "commands.unmute.failure", "Player is not muted."),
+    UNBAN_COMMAND_MESSAGE_SUCCESS ("Unban Command Success Message", "commands.unban.success", "Player has been unbanned"),
+    UNBAN_COMMAND_MESSAGE_FAILURE ("Unban Command Failure Message", "commands.unban.failure", "Player is not banned by SpamHammer."),
+    RESET_COMMAND_MESSAGE_SUCCESS ("Reset Command Success Message", "commands.reset.success", "Player's punishment level reset.");
 
     private String name;
     private Object def;

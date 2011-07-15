@@ -1,5 +1,6 @@
 package com.dumptruckman.spamhammer;
 
+import com.dumptruckman.spamhammer.commands.SpamHammerPluginCommand;
 import com.dumptruckman.spamhammer.listeners.SpamHammerPlayerListener;
 import com.dumptruckman.util.io.ConfigIO;
 import org.bukkit.event.Event;
@@ -12,7 +13,7 @@ import java.io.File;
 import java.util.*;
 import java.util.logging.Logger;
 
-import static com.dumptruckman.spamhammer.Config.ConfigPath.*;
+import static com.dumptruckman.spamhammer.config.ConfigPath.*;
 
 /**
  * @author dumptruckman
@@ -22,15 +23,14 @@ public class SpamHammer extends JavaPlugin {
     private final static String PLUGIN_NAME = "SpamHammer";
     public static final Logger log = Logger.getLogger("Minecraft.SpamHammer");
 
-
     public Configuration config;
     public Configuration banList;
     private int limit;
     private Map<String, ArrayDeque<String>> playerChatHistory;
     private List<String> mutedPlayers;
     private Map<String, Long> actionTime;
-    private List<String> beenMuted;
-    private List<String> beenKicked;
+    public List<String> beenMuted;
+    public List<String> beenKicked;
     private Timer timer;
 
     public SpamHammer() {
@@ -53,6 +53,11 @@ public class SpamHammer extends JavaPlugin {
         pm.registerEvent(Type.PLAYER_LOGIN, new SpamHammerPlayerListener(this), Event.Priority.Normal, this);
 
         reload();
+
+        // Register command executor for commands
+        getCommand("spamunban").setExecutor(new SpamHammerPluginCommand(this));
+        getCommand("spamunmute").setExecutor(new SpamHammerPluginCommand(this));
+        getCommand("spamreset").setExecutor(new SpamHammerPluginCommand(this));
 
         timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
@@ -172,6 +177,24 @@ public class SpamHammer extends JavaPlugin {
         if (config.getString(BAN_MESSAGE.toString()) == null) {
             config.setProperty(BAN_MESSAGE.toString(), BAN_MESSAGE.getDefault());
         }
+        if (config.getString(COOL_OFF_MESSAGE.toString()) == null) {
+            config.setProperty(COOL_OFF_MESSAGE.toString(), COOL_OFF_MESSAGE.getDefault());
+        }
+        if (config.getString(UNMUTE_COMMAND_MESSAGE_SUCCESS.toString()) == null) {
+            config.setProperty(UNMUTE_COMMAND_MESSAGE_SUCCESS.toString(), UNMUTE_COMMAND_MESSAGE_SUCCESS.getDefault());
+        }
+        if (config.getString(UNMUTE_COMMAND_MESSAGE_FAILURE.toString()) == null) {
+            config.setProperty(UNMUTE_COMMAND_MESSAGE_FAILURE.toString(), UNMUTE_COMMAND_MESSAGE_FAILURE.getDefault());
+        }
+        if (config.getString(UNBAN_COMMAND_MESSAGE_SUCCESS.toString()) == null) {
+            config.setProperty(UNBAN_COMMAND_MESSAGE_SUCCESS.toString(), UNBAN_COMMAND_MESSAGE_SUCCESS.getDefault());
+        }
+        if (config.getString(UNBAN_COMMAND_MESSAGE_FAILURE.toString()) == null) {
+            config.setProperty(UNBAN_COMMAND_MESSAGE_FAILURE.toString(), UNBAN_COMMAND_MESSAGE_FAILURE.getDefault());
+        }
+        if (config.getString(RESET_COMMAND_MESSAGE_SUCCESS.toString()) == null) {
+            config.setProperty(RESET_COMMAND_MESSAGE_SUCCESS.toString(), RESET_COMMAND_MESSAGE_SUCCESS.getDefault());
+        }
     }
 
     public void addChatMessage(String name, String message) {
@@ -212,7 +235,9 @@ public class SpamHammer extends JavaPlugin {
             String message = m.toString();
             if (lastMessage == null) {
                 lastMessage = message;
-            } else if (message.equals(lastMessage)) {
+                continue;
+            }
+            if (message.equals(lastMessage)) {
                 samecount++;
             } else {
                 playerChatHistory.get(name).clear();
@@ -222,23 +247,20 @@ public class SpamHammer extends JavaPlugin {
             if (mute != 0 && !beenMuted(name) && samecount >= mute) {
                 mutePlayer(name);
                 playerChatHistory.get(name).clear();
-                addChatMessage(name, message);
                 break;
             } else if (mute != 0 && !beenMuted(name)) {
-                break;
+                continue;
             }
             if (kick != 0 && !beenKicked(name) && samecount >= kick) {
                 kickPlayer(name);
                 playerChatHistory.get(name).clear();
-                addChatMessage(name, message);
                 break;
             } else if (kick != 0 && !beenKicked(name)) {
-                break;
+                continue;
             }
             if (ban != 0 && samecount >= ban) {
                 banPlayer(name);
                 playerChatHistory.get(name).clear();
-                addChatMessage(name, message);
                 break;
             }
         }
@@ -279,6 +301,14 @@ public class SpamHammer extends JavaPlugin {
         banList.save();
     }
 
+    public void unBanPlayer(String name) {
+        List<Object> bannedplayers = banList.getList("banned");
+        if (bannedplayers == null) return;
+        bannedplayers.remove(name);
+        banList.setProperty("banned", bannedplayers);
+        banList.save();
+    }
+
     public void checkTimes() {
         Long time = new Date().getTime() / 1000;
         for (String player : actionTime.keySet()) {
@@ -289,7 +319,13 @@ public class SpamHammer extends JavaPlugin {
             }
             if ((time > (actionTime.get(player) + config.getInt(COOL_OFF.toString(), 300)))
                     && (config.getInt(COOL_OFF.toString(), 300) != 0)) {
-                unMutePlayer(player);
+                if (beenKicked(player)) beenKicked.remove(player);
+                if (beenMuted(player)) {
+                    if (getServer().getPlayer(player) != null) {
+                        getServer().getPlayer(player).sendMessage(config.getString(COOL_OFF_MESSAGE.toString()));
+                    }
+                    beenMuted.remove(player);
+                }
             }
         }
     }
