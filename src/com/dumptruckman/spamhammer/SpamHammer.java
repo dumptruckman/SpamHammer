@@ -23,6 +23,8 @@ public class SpamHammer extends JavaPlugin {
     private final static String PLUGIN_NAME = "SpamHammer";
     public static final Logger log = Logger.getLogger("Minecraft.SpamHammer");
 
+    public final SpamHammerPlayerListener playerListener = new SpamHammerPlayerListener(this);
+
     public Configuration config;
     public Configuration banList;
     private int messagelimit;
@@ -53,8 +55,9 @@ public class SpamHammer extends JavaPlugin {
         final PluginManager pm = getServer().getPluginManager();
 
         // Register event
-        pm.registerEvent(Type.PLAYER_CHAT, new SpamHammerPlayerListener(this), Event.Priority.Normal, this);
-        pm.registerEvent(Type.PLAYER_LOGIN, new SpamHammerPlayerListener(this), Event.Priority.Normal, this);
+        pm.registerEvent(Type.PLAYER_CHAT, playerListener, Event.Priority.High, this);
+        pm.registerEvent(Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.High, this);
+        pm.registerEvent(Type.PLAYER_LOGIN, playerListener, Event.Priority.Normal, this);
 
         reload();
 

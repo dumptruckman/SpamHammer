@@ -3,6 +3,7 @@ package com.dumptruckman.spamhammer.listeners;
 import com.dumptruckman.spamhammer.config.ConfigPath;
 import com.dumptruckman.spamhammer.SpamHammer;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 
@@ -25,7 +26,6 @@ public class SpamHammerPlayerListener extends PlayerListener {
             event.setCancelled(true);
             return;
         }
-        
         plugin.addChatMessage(event.getPlayer().getName());
     }
 
@@ -34,5 +34,15 @@ public class SpamHammerPlayerListener extends PlayerListener {
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
                     plugin.config.getString(ConfigPath.BAN_MESSAGE.toString()));
         }
+    }
+
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        if (event.getPlayer().isOp()) return;
+        if (plugin.isMuted(event.getPlayer().getName())) {
+            event.getPlayer().sendMessage(plugin.config.getString(ConfigPath.MUTED_MESSAGE.toString()));
+            event.setCancelled(true);
+            return;
+        }
+        plugin.addChatMessage(event.getPlayer().getName());
     }
 }
