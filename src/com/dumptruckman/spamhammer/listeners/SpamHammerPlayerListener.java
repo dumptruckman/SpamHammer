@@ -26,8 +26,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
             return;
         }
         
-        plugin.addChatMessage(event.getPlayer().getName(), event.getMessage());
-        plugin.checkSpam(event.getPlayer().getName());
+        plugin.addChatMessage(event.getPlayer().getName());
     }
 
     public void onPlayerLogin(PlayerLoginEvent event) {

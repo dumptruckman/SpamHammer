@@ -25,8 +25,12 @@ public class SpamHammer extends JavaPlugin {
 
     public Configuration config;
     public Configuration banList;
-    private int limit;
-    private Map<String, ArrayDeque<String>> playerChatHistory;
+    private int messagelimit;
+    private long timeperiod;
+    private boolean useMute;
+    private boolean useBan;
+    private boolean useKick;
+    private Map<String, ArrayDeque<Long>> playerChatTimes;
     private List<String> mutedPlayers;
     private Map<String, Long> actionTime;
     public List<String> beenMuted;
@@ -34,7 +38,7 @@ public class SpamHammer extends JavaPlugin {
     private Timer timer;
 
     public SpamHammer() {
-        playerChatHistory = new HashMap<String, ArrayDeque<String>>();
+        playerChatTimes = new HashMap<String, ArrayDeque<Long>>();
         mutedPlayers = new ArrayList<String>();
         beenMuted = new ArrayList<String>();
         beenKicked = new ArrayList<String>();
@@ -80,30 +84,50 @@ public class SpamHammer extends JavaPlugin {
         banList = new ConfigIO(new File(this.getDataFolder(), "banlist.yml")).load();
         setDefaults();
 
-        limit = config.getInt(MUTE_LIMIT.toString(), 0);
-        if (limit < config.getInt(KICK_LIMIT.toString(), 0)) {
-            limit = config.getInt(KICK_LIMIT.toString(), 0);
+        messagelimit = config.getInt(MESSAGE_LIMIT.toString(), 3);
+        timeperiod = config.getInt(TIME_PERIOD.toString(), 1) * 1000;
+        useBan = Boolean.parseBoolean(config.getString(USE_BAN.toString()));
+        useKick = Boolean.parseBoolean(config.getString(USE_KICK.toString()));
+        useMute = Boolean.parseBoolean(config.getString(USE_MUTE.toString()));
+        /*
+        if (messagelimit < config.getInt(USE_KICK.toString(), 0)) {
+            messagelimit = config.getInt(USE_KICK.toString(), 0);
         }
-        if (limit < config.getInt(BAN_LIMIT.toString(), 0)) {
-            limit = config.getInt(BAN_LIMIT.toString(), 0);
+        if (messagelimit < config.getInt(USE_BAN.toString(), 0)) {
+            messagelimit = config.getInt(USE_BAN.toString(), 0);
         }
+        */
         config.save();
     }
 
     final public void setDefaults() {
         // Set/Verifies defaults
-        if (config.getString(MUTE_LIMIT.toString()) == null) {
-            config.setProperty(MUTE_LIMIT.toString(), MUTE_LIMIT.getDefault());
+        if (config.getString(MESSAGE_LIMIT.toString()) == null) {
+            config.setProperty(MESSAGE_LIMIT.toString(), MESSAGE_LIMIT.getDefault());
         } else {
             try {
-                int temp = Integer.parseInt(config.getString(MUTE_LIMIT.toString()));
+                int temp = Integer.parseInt(config.getString(MESSAGE_LIMIT.toString()));
                 if (temp < 0) {
                     throw new NumberFormatException("negative");
                 }
             } catch (NumberFormatException nfe) {
-                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + MUTE_LIMIT.getName() + "'."
-                        + "  Setting to default: " + MUTE_LIMIT.getDefault());
-                config.setProperty(MUTE_LIMIT.toString(), MUTE_LIMIT.getDefault());
+                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + MESSAGE_LIMIT.getName() + "'."
+                        + "  Setting to default: " + MESSAGE_LIMIT.getDefault());
+                config.setProperty(MESSAGE_LIMIT.toString(), MESSAGE_LIMIT.getDefault());
+            }
+        }
+        if (config.getString(TIME_PERIOD.toString()) == null) {
+            config.setProperty(TIME_PERIOD.toString(), TIME_PERIOD.getDefault());
+        } else {
+            try {
+                int temp = Integer.parseInt(config.getString(TIME_PERIOD.toString()));
+                if (temp < 0) {
+                    throw new NumberFormatException("negative");
+                }
+            } catch (NumberFormatException nfe) {
+                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + TIME_PERIOD.getName() + "'."
+                        + "  Setting to default: " + TIME_PERIOD.getDefault());
+                config.setProperty(TIME_PERIOD.toString(), TIME_PERIOD.getDefault());
             }
         }
         if (config.getString(MUTE_LENGTH.toString()) == null) {
@@ -120,34 +144,18 @@ public class SpamHammer extends JavaPlugin {
                 config.setProperty(MUTE_LENGTH.toString(), MUTE_LENGTH.getDefault());
             }
         }
-        if (config.getString(KICK_LIMIT.toString()) == null) {
-            config.setProperty(KICK_LIMIT.toString(), KICK_LIMIT.getDefault());
-        } else {
-            try {
-                int temp = Integer.parseInt(config.getString(KICK_LIMIT.toString()));
-                if (temp < 0) {
-                    throw new NumberFormatException("negative");
-                }
-            } catch (NumberFormatException nfe) {
-                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + KICK_LIMIT.getName() + "'."
-                        + "  Setting to default: " + KICK_LIMIT.getDefault());
-                config.setProperty(KICK_LIMIT.toString(), KICK_LIMIT.getDefault());
-            }
+        if (config.getString(USE_MUTE.toString()) == null) {
+            config.setProperty(USE_MUTE.toString(), USE_MUTE.getDefault());
         }
-        if (config.getString(BAN_LIMIT.toString()) == null) {
-            config.setProperty(BAN_LIMIT.toString(), BAN_LIMIT.getDefault());
-        } else {
-            try {
-                int temp = Integer.parseInt(config.getString(BAN_LIMIT.toString()));
-                if (temp < 0) {
-                    throw new NumberFormatException("negative");
-                }
-            } catch (NumberFormatException nfe) {
-                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + BAN_LIMIT.getName() + "'."
-                        + "  Setting to default: " + BAN_LIMIT.getDefault());
-                config.setProperty(BAN_LIMIT.toString(), BAN_LIMIT.getDefault());
-            }
+
+        if (config.getString(USE_KICK.toString()) == null) {
+            config.setProperty(USE_KICK.toString(), USE_KICK.getDefault());
         }
+
+        if (config.getString(USE_BAN.toString()) == null) {
+            config.setProperty(USE_BAN.toString(), USE_BAN.getDefault());
+        }
+
         if (config.getString(COOL_OFF.toString()) == null) {
             config.setProperty(COOL_OFF.toString(), COOL_OFF.getDefault());
         } else {
@@ -197,14 +205,38 @@ public class SpamHammer extends JavaPlugin {
         }
     }
 
-    public void addChatMessage(String name, String message) {
-        ArrayDeque<String> player = playerChatHistory.get(name);
-        if (player == null) player = new ArrayDeque<String>();
-        player.add(message);
-        if (player.size() > limit) {
-            player.remove();
+    public void addChatMessage(String name) {
+        ArrayDeque<Long> times = playerChatTimes.get(name);
+        if (times == null) times = new ArrayDeque<Long>();
+        long curtime = System.currentTimeMillis();
+        times.add(curtime);
+        if (times.size() > messagelimit) {
+            times.remove();
         }
-        playerChatHistory.put(name, player);
+        long timediff = times.getLast() - times.getFirst();
+        if (timediff > timeperiod) {
+            times.clear();
+            times.add(curtime);
+        }
+
+        if (times.size() == messagelimit) {
+            playerIsSpamming(name);
+        }
+        playerChatTimes.put(name, times);
+    }
+
+    public void playerIsSpamming(String name) {
+        if(useMute && !beenMuted(name)) {
+            mutePlayer(name);
+            return;
+        }
+        if (useKick && !beenKicked(name)) {
+            kickPlayer(name);
+            return;
+        }
+        if (useBan) {
+            banPlayer(name);
+        }
     }
 
     public boolean isMuted(String name) {
@@ -225,51 +257,10 @@ public class SpamHammer extends JavaPlugin {
         return beenKicked.contains(name);
     }
 
-    public void checkSpam(String name) {
-        int samecount = 1;
-        int mute = config.getInt(MUTE_LIMIT.toString(), 0);
-        int kick = config.getInt(KICK_LIMIT.toString(), 0);
-        int ban = config.getInt(BAN_LIMIT.toString(), 0);
-        String lastMessage = null;
-        for (Object m : playerChatHistory.get(name).toArray()) {
-            String message = m.toString();
-            if (lastMessage == null) {
-                lastMessage = message;
-                continue;
-            }
-            if (message.equals(lastMessage)) {
-                samecount++;
-            } else {
-                playerChatHistory.get(name).clear();
-                addChatMessage(name, message);
-                break;
-            }
-            if (mute != 0 && !beenMuted(name) && samecount >= mute) {
-                mutePlayer(name);
-                playerChatHistory.get(name).clear();
-                break;
-            } else if (mute != 0 && !beenMuted(name)) {
-                continue;
-            }
-            if (kick != 0 && !beenKicked(name) && samecount >= kick) {
-                kickPlayer(name);
-                playerChatHistory.get(name).clear();
-                break;
-            } else if (kick != 0 && !beenKicked(name)) {
-                continue;
-            }
-            if (ban != 0 && samecount >= ban) {
-                banPlayer(name);
-                playerChatHistory.get(name).clear();
-                break;
-            }
-        }
-    }
-
     public void mutePlayer(String name) {
         mutedPlayers.add(name);
         beenMuted.add(name);
-        actionTime.put(name, new Date().getTime() / 1000);
+        actionTime.put(name, System.currentTimeMillis() / 1000);
         String message = config.getString(MUTE_MESSAGE.toString());
         message = message.replace("%t", config.getString(MUTE_LENGTH.toString()));
         getServer().getPlayer(name).sendMessage(message);
@@ -284,7 +275,7 @@ public class SpamHammer extends JavaPlugin {
 
     public void kickPlayer(String name) {
         beenKicked.add(name);
-        actionTime.put(name, new Date().getTime() / 1000);
+        actionTime.put(name, System.currentTimeMillis() / 1000);
         if (getServer().getPlayer(name) != null) {
             getServer().getPlayer(name).kickPlayer(config.getString(KICK_MESSAGE.toString()));
         }
@@ -310,7 +301,7 @@ public class SpamHammer extends JavaPlugin {
     }
 
     public void checkTimes() {
-        Long time = new Date().getTime() / 1000;
+        Long time = System.currentTimeMillis() / 1000;
         for (String player : actionTime.keySet()) {
             if (isMuted(player)) {
                 if (time > (actionTime.get(player) + config.getInt(MUTE_LENGTH.toString(), 0))) {

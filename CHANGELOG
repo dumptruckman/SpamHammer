@@ -1,3 +1,7 @@
+Version 1.2
+    Modified the way the plugin detects spam... Now works faster and more effectively.
+    Changed the config options.
+
 Version 1.1
     Plugin actually works now.  Silly me.
     Added a message option for the cool off timer.
