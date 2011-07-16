@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="BukkitContrib">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../lib/BukkitContrib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/../lib/BukkitContrib" recursive="false" />
+  </library>
+</component>

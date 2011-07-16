@@ -1,4 +1,8 @@
-Version 1.3
+Version 1.3b
+    Disabling certain punishments no longer breaks the ones still enabled.
+    Because this plugin could break features of BukkitContrib, players with the BC client mod on a server with the BC plugin will not be affected.
+    
+Version 1.3a
     SpamHammer now additionally picks up command usage to prevent using chat commands as a work-around.
 
 Version 1.2

@@ -92,14 +92,6 @@ public class SpamHammer extends JavaPlugin {
         useBan = Boolean.parseBoolean(config.getString(USE_BAN.toString()));
         useKick = Boolean.parseBoolean(config.getString(USE_KICK.toString()));
         useMute = Boolean.parseBoolean(config.getString(USE_MUTE.toString()));
-        /*
-        if (messagelimit < config.getInt(USE_KICK.toString(), 0)) {
-            messagelimit = config.getInt(USE_KICK.toString(), 0);
-        }
-        if (messagelimit < config.getInt(USE_BAN.toString(), 0)) {
-            messagelimit = config.getInt(USE_BAN.toString(), 0);
-        }
-        */
         config.save();
     }
 
@@ -229,11 +221,11 @@ public class SpamHammer extends JavaPlugin {
     }
 
     public void playerIsSpamming(String name) {
-        if(useMute && !beenMuted(name)) {
+        if(useMute && (!beenMuted(name) || (!useKick && !useBan))) {
             mutePlayer(name);
             return;
         }
-        if (useKick && !beenKicked(name)) {
+        if (useKick && (!beenKicked(name) || !useBan)) {
             kickPlayer(name);
             return;
         }

@@ -6,6 +6,9 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkitcontrib.player.ContribPlayer;
 
 /**
  * @author dumptruckman
@@ -21,6 +24,17 @@ public class SpamHammerPlayerListener extends PlayerListener {
     @Override
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.getPlayer().isOp()) return;
+        //Check for bukkitcontrib
+        Plugin BC = plugin.getServer().getPluginManager().getPlugin("BukkitContrib");
+        if (BC != null) {
+        	if (event.getPlayer() instanceof ContribPlayer) {
+        		ContribPlayer plyr = (ContribPlayer)event.getPlayer();
+        		if (plyr.isBukkitContribEnabled()) {
+                    // This plugin may incorrectly punish bukkitcontrib players. Therefore it doesn't work on them.
+        			return;
+        		}
+        	}
+        }
         if (plugin.isMuted(event.getPlayer().getName())) {
             event.getPlayer().sendMessage(plugin.config.getString(ConfigPath.MUTED_MESSAGE.toString()));
             event.setCancelled(true);
