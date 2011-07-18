@@ -2,6 +2,7 @@ package com.dumptruckman.spamhammer.listeners;
 
 import com.dumptruckman.spamhammer.config.ConfigPath;
 import com.dumptruckman.spamhammer.SpamHammer;
+import com.sun.xml.internal.ws.client.SenderException;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -45,6 +46,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
         if (plugin.addChatMessage(event.getPlayer().getName())
                 && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(plugin.config.getString(RATE_LIMIT_MESSAGE.toString()));
         }
     }
 
@@ -65,6 +67,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
         if (plugin.addChatMessage(event.getPlayer().getName())
                 && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
             event.setCancelled(true);
+            event.getPlayer().sendMessage(plugin.config.getString(RATE_LIMIT_MESSAGE.toString()));
         }
     }
 }

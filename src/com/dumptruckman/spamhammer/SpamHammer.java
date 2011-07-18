@@ -198,6 +198,9 @@ public class SpamHammer extends JavaPlugin {
         if (config.getString(RESET_COMMAND_MESSAGE_SUCCESS.toString()) == null) {
             config.setProperty(RESET_COMMAND_MESSAGE_SUCCESS.toString(), RESET_COMMAND_MESSAGE_SUCCESS.getDefault());
         }
+        if (config.getString(RATE_LIMIT_MESSAGE.toString()) == null) {
+            config.setProperty(RATE_LIMIT_MESSAGE.toString(), RATE_LIMIT_MESSAGE.getDefault());
+        }
     }
 
     public boolean addChatMessage(String name) {

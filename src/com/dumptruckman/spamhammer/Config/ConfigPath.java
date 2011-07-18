@@ -18,6 +18,7 @@ public enum ConfigPath {
     COOL_OFF ("Cool Off Time", "cooloff.time", 300),
     COOL_OFF_MESSAGE ("Cool Off Message", "cooloff.message", "Spamming punishment reset.  Be nice!"),
     PREVENT_MESSAGES ("Prevent Messages Above Limit", "message.preventabovelimit", true),
+    RATE_LIMIT_MESSAGE ( "Rate Limit Exceeded Message", "abovelimit.message", "You are typing too fast!"),
     UNMUTE_COMMAND_MESSAGE_SUCCESS ("Unmute Command Success Message", "commands.unmute.success", "Player has been unmuted."),
     UNMUTE_COMMAND_MESSAGE_FAILURE ("Unmute Command Failure Message", "commands.unmute.failure", "Player is not muted."),
     UNBAN_COMMAND_MESSAGE_SUCCESS ("Unban Command Success Message", "commands.unban.success", "Player has been unbanned"),
