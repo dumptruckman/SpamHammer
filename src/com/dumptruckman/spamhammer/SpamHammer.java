@@ -142,15 +142,15 @@ public class SpamHammer extends JavaPlugin {
         if (config.getString(USE_MUTE.toString()) == null) {
             config.setProperty(USE_MUTE.toString(), USE_MUTE.getDefault());
         }
-
         if (config.getString(USE_KICK.toString()) == null) {
             config.setProperty(USE_KICK.toString(), USE_KICK.getDefault());
         }
-
         if (config.getString(USE_BAN.toString()) == null) {
             config.setProperty(USE_BAN.toString(), USE_BAN.getDefault());
         }
-
+        if (config.getString(PREVENT_MESSAGES.toString()) == null) {
+            config.setProperty(PREVENT_MESSAGES.toString(), PREVENT_MESSAGES.getDefault());
+        }
         if (config.getString(COOL_OFF.toString()) == null) {
             config.setProperty(COOL_OFF.toString(), COOL_OFF.getDefault());
         } else {
@@ -200,7 +200,7 @@ public class SpamHammer extends JavaPlugin {
         }
     }
 
-    public void addChatMessage(String name) {
+    public boolean addChatMessage(String name) {
         ArrayDeque<Long> times = playerChatTimes.get(name);
         if (times == null) times = new ArrayDeque<Long>();
         long curtime = System.currentTimeMillis();
@@ -213,11 +213,13 @@ public class SpamHammer extends JavaPlugin {
             times.clear();
             times.add(curtime);
         }
-
+        boolean isSpamming = false;
         if (times.size() == messagelimit) {
             playerIsSpamming(name);
+            isSpamming = true;
         }
         playerChatTimes.put(name, times);
+        return isSpamming;
     }
 
     public void playerIsSpamming(String name) {

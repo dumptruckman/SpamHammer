@@ -1,3 +1,6 @@
+Version 1.4
+    Added config option (default: true) to prevent messages over the limit from appearing.  This will allow for non-punishment solutions.
+    
 Version 1.3b
     Disabling certain punishments no longer breaks the ones still enabled.
     Because this plugin could break features of BukkitContrib, players with the BC client mod on a server with the BC plugin will not be affected.

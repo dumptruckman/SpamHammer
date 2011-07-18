@@ -10,6 +10,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkitcontrib.player.ContribPlayer;
 
+import static com.dumptruckman.spamhammer.config.ConfigPath.*;
+
 /**
  * @author dumptruckman
  */
@@ -36,27 +38,33 @@ public class SpamHammerPlayerListener extends PlayerListener {
         	}
         }
         if (plugin.isMuted(event.getPlayer().getName())) {
-            event.getPlayer().sendMessage(plugin.config.getString(ConfigPath.MUTED_MESSAGE.toString()));
+            event.getPlayer().sendMessage(plugin.config.getString(MUTED_MESSAGE.toString()));
             event.setCancelled(true);
             return;
         }
-        plugin.addChatMessage(event.getPlayer().getName());
+        if (plugin.addChatMessage(event.getPlayer().getName())
+                && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
+            event.setCancelled(true);
+        }
     }
 
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (plugin.isBanned(event.getPlayer().getName())) {
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
-                    plugin.config.getString(ConfigPath.BAN_MESSAGE.toString()));
+                    plugin.config.getString(BAN_MESSAGE.toString()));
         }
     }
 
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.getPlayer().isOp()) return;
         if (plugin.isMuted(event.getPlayer().getName())) {
-            event.getPlayer().sendMessage(plugin.config.getString(ConfigPath.MUTED_MESSAGE.toString()));
+            event.getPlayer().sendMessage(plugin.config.getString(MUTED_MESSAGE.toString()));
             event.setCancelled(true);
             return;
         }
-        plugin.addChatMessage(event.getPlayer().getName());
+        if (plugin.addChatMessage(event.getPlayer().getName())
+                && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
+            event.setCancelled(true);
+        }
     }
 }
