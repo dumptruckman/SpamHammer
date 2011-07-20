@@ -1,3 +1,6 @@
+Version 1.5a
+    Added bukkit permissions support.
+
 Version 1.4
     Added config option (default: true) to prevent messages over the limit from appearing.  This will allow for non-punishment solutions.
     

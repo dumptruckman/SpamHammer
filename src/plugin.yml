@@ -1,6 +1,6 @@
 name: SpamHammer
 main: com.dumptruckman.spamhammer.SpamHammer
-version: 1.4
+version: 1.5a
 author: dumptruckman
 
 commands:
@@ -22,3 +22,25 @@ commands:
            /<command> <playername>
            /<command> dumptruckman - Makes it like dumptruckman never spammed in the first place.
     aliases: dc
+    
+permissions:
+  spamhammer.*:
+    description: Give access to all dChest commands
+    children:
+      spamhammer.unban: true
+      spamhammer.unmute: true
+      spamhammer.reset: true
+      spamhammer.ignore: true
+  spamhammer.unban:
+    description: Allows use of /spamunban
+    default: op
+  spamhammer.unmute:
+    description: Allows use of /spamunmute
+    default: op
+  spamhammer.reset:
+    description: Allows use of /spamreset
+    default: op
+  spamhammer.ignore:
+    description: Allows user to be unaffected by spamhammer
+    default: op
+  

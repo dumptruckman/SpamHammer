@@ -22,11 +22,11 @@ public class SpamHammerPluginCommand implements CommandExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.isOp()) {
-            sender.sendMessage("This command is only available to server ops.");
-            return true;
-        }
         if (command.getName().equals("spamunban")) {
+            if (!sender.hasPermission("spamhammer.unban")) {
+                sender.sendMessage("You do not have permission to access this command.");
+                return true;
+            }
             if (args.length != 1) {
                 return false;
             }
@@ -38,6 +38,10 @@ public class SpamHammerPluginCommand implements CommandExecutor {
             }
             return true;
         } else if (command.getName().equals("spamunmute")) {
+            if (!sender.hasPermission("spamhammer.unmute")) {
+                sender.sendMessage("You do not have permission to access this command.");
+                return true;
+            }
             if (args.length != 1) {
                 return false;
             }
@@ -50,6 +54,10 @@ public class SpamHammerPluginCommand implements CommandExecutor {
             }
             return true;
         } else if (command.getName().equals("spamreset")) {
+            if (!sender.hasPermission("spamhammer.reset")) {
+                sender.sendMessage("You do not have permission to access this command.");
+                return true;
+            }
             if (args.length != 1) {
                 return false;
             }
