@@ -27,12 +27,16 @@ public class SpamHammer extends JavaPlugin {
 
     public Configuration config;
     public Configuration banList;
-    private int messagelimit;
-    private long timeperiod;
+    private int messageLimit;
+    private long timePeriod;
+    private int repeatLimit;
     private boolean useMute;
     private boolean useBan;
     private boolean useKick;
+    public boolean useRepeatLimit;
+    public boolean preventMessages;
     private Map<String, ArrayDeque<Long>> playerChatTimes;
+    private Map<String, ArrayDeque<String>> playerChatHistory;
     private List<String> mutedPlayers;
     private Map<String, Long> actionTime;
     public List<String> beenMuted;
@@ -41,6 +45,7 @@ public class SpamHammer extends JavaPlugin {
 
     public SpamHammer() {
         playerChatTimes = new HashMap<String, ArrayDeque<Long>>();
+        playerChatHistory = new HashMap<String, ArrayDeque<String>>();
         mutedPlayers = new ArrayList<String>();
         beenMuted = new ArrayList<String>();
         beenKicked = new ArrayList<String>();
@@ -87,8 +92,11 @@ public class SpamHammer extends JavaPlugin {
         banList = new ConfigIO(new File(this.getDataFolder(), "banlist.yml")).load();
         setDefaults();
 
-        messagelimit = config.getInt(MESSAGE_LIMIT.toString(), 3);
-        timeperiod = config.getInt(TIME_PERIOD.toString(), 1) * 1000;
+        messageLimit = config.getInt(MESSAGE_LIMIT.toString(), (Integer)MESSAGE_LIMIT.getDefault());
+        repeatLimit = config.getInt(REPEAT_LIMIT.toString(), (Integer)REPEAT_LIMIT.getDefault());
+        timePeriod = config.getInt(TIME_PERIOD.toString(), (Integer)TIME_PERIOD.getDefault()) * 1000;
+        useRepeatLimit = Boolean.parseBoolean(config.getString(BLOCK_REPEATS.toString()));
+        preventMessages = Boolean.parseBoolean(config.getString(PREVENT_MESSAGES.toString()));
         useBan = Boolean.parseBoolean(config.getString(USE_BAN.toString()));
         useKick = Boolean.parseBoolean(config.getString(USE_KICK.toString()));
         useMute = Boolean.parseBoolean(config.getString(USE_MUTE.toString()));
@@ -109,6 +117,20 @@ public class SpamHammer extends JavaPlugin {
                 log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + MESSAGE_LIMIT.getName() + "'."
                         + "  Setting to default: " + MESSAGE_LIMIT.getDefault());
                 config.setProperty(MESSAGE_LIMIT.toString(), MESSAGE_LIMIT.getDefault());
+            }
+        }
+        if (config.getString(REPEAT_LIMIT.toString()) == null) {
+            config.setProperty(REPEAT_LIMIT.toString(), REPEAT_LIMIT.getDefault());
+        } else {
+            try {
+                int temp = Integer.parseInt(config.getString(REPEAT_LIMIT.toString()));
+                if (temp < 0) {
+                    throw new NumberFormatException("negative");
+                }
+            } catch (NumberFormatException nfe) {
+                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + REPEAT_LIMIT.getName() + "'."
+                        + "  Setting to default: " + REPEAT_LIMIT.getDefault());
+                config.setProperty(REPEAT_LIMIT.toString(), REPEAT_LIMIT.getDefault());
             }
         }
         if (config.getString(TIME_PERIOD.toString()) == null) {
@@ -138,6 +160,9 @@ public class SpamHammer extends JavaPlugin {
                         + "  Setting to default: " + MUTE_LENGTH.getDefault());
                 config.setProperty(MUTE_LENGTH.toString(), MUTE_LENGTH.getDefault());
             }
+        }
+        if (config.getString(BLOCK_REPEATS.toString()) == null) {
+            config.setProperty(BLOCK_REPEATS.toString(), BLOCK_REPEATS.getDefault());
         }
         if (config.getString(USE_MUTE.toString()) == null) {
             config.setProperty(USE_MUTE.toString(), USE_MUTE.getDefault());
@@ -203,25 +228,64 @@ public class SpamHammer extends JavaPlugin {
         }
     }
 
-    public boolean addChatMessage(String name) {
+    public boolean addChatMessage(String name, String message) {
+        boolean isSpamming = false;
+
+        // Detect rate limited messages
         ArrayDeque<Long> times = playerChatTimes.get(name);
         if (times == null) times = new ArrayDeque<Long>();
         long curtime = System.currentTimeMillis();
         times.add(curtime);
-        if (times.size() > messagelimit) {
+        if (times.size() > messageLimit) {
             times.remove();
         }
         long timediff = times.getLast() - times.getFirst();
-        if (timediff > timeperiod) {
+        if (timediff > timePeriod) {
             times.clear();
             times.add(curtime);
         }
-        boolean isSpamming = false;
-        if (times.size() == messagelimit) {
-            playerIsSpamming(name);
+        if (times.size() == messageLimit) {
             isSpamming = true;
         }
         playerChatTimes.put(name, times);
+
+        // Detect duplicate messages
+        if (useRepeatLimit && !isSpamming) {
+            ArrayDeque<String> player = playerChatHistory.get(name);
+            if (player == null) player = new ArrayDeque<String>();
+            player.add(message);
+            if (player.size() > (repeatLimit + 1)) {
+                player.remove();
+            }
+            playerChatHistory.put(name, player);
+            isSpamming = hasDuplicateMessages(name);
+        }
+        
+        if (isSpamming) {
+            playerIsSpamming(name);
+        }
+        return isSpamming;
+    }
+
+    public boolean hasDuplicateMessages(String name) {
+        boolean isSpamming = false;
+        int samecount = 1;
+        String lastMessage = null;
+        for (Object m : playerChatHistory.get(name).toArray()) {
+            String message = m.toString();
+            if (lastMessage == null) {
+                lastMessage = message;
+                continue;
+            }
+            if (message.equals(lastMessage)) {
+                samecount++;
+            } else {
+                playerChatHistory.get(name).clear();
+                playerChatHistory.get(name).add(message);
+                break;
+            }
+            isSpamming = (samecount > repeatLimit);
+        }
         return isSpamming;
     }
 

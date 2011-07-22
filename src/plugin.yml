@@ -1,6 +1,6 @@
 name: SpamHammer
 main: com.dumptruckman.spamhammer.SpamHammer
-version: 1.5a
+version: 1.6
 author: dumptruckman
 
 commands:

@@ -67,7 +67,7 @@
       <file leaf-file-name="SpamHammer.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/SpamHammer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="201" column="80" selection-start="9315" selection-end="9315" vertical-scroll-proportion="0.0">
+            <state line="256" column="52" selection-start="11848" selection-end="11848" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -76,7 +76,7 @@
       <file leaf-file-name="SpamHammerPluginCommand.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/commands/SpamHammerPluginCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="56" column="56" selection-start="2191" selection-end="2191" vertical-scroll-proportion="0.0">
+            <state line="76" column="0" selection-start="2814" selection-end="2814" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -85,7 +85,7 @@
       <file leaf-file-name="ConfigPath.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/config/ConfigPath.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="4" selection-start="1801" selection-end="1801" vertical-scroll-proportion="0.0">
+            <state line="10" column="67" selection-start="407" selection-end="407" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -94,7 +94,7 @@
       <file leaf-file-name="SpamHammerPlayerListener.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/listeners/SpamHammerPlayerListener.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="62" selection-start="948" selection-end="948" vertical-scroll-proportion="0.0">
+            <state line="48" column="98" selection-start="1930" selection-end="1930" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -103,7 +103,7 @@
       <file leaf-file-name="CHANGELOG" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/CHANGELOG">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="12" selection-start="12" selection-end="12" vertical-scroll-proportion="0.0">
+            <state line="1" column="56" selection-start="68" selection-end="68" vertical-scroll-proportion="0.020262217">
               <folding />
             </state>
           </provider>
@@ -133,10 +133,10 @@
         <option value="$PROJECT_DIR$/src/com/dumptruckman/spamfilter/SpamFilter.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/SpamFilter.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/Config/ConfigPath.java" />
-        <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/config/ConfigPath.java" />
-        <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/SpamHammer.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/commands/SpamHammerPluginCommand.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/config/ConfigPath.java" />
         <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/listeners/SpamHammerPlayerListener.java" />
+        <option value="$PROJECT_DIR$/src/com/dumptruckman/spamhammer/SpamHammer.java" />
         <option value="$PROJECT_DIR$/CHANGELOG" />
       </list>
     </option>
@@ -174,6 +174,9 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
+      <pane id="Favorites" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -296,22 +299,26 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Favorites" />
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="GoToFile.includeJavaFiles" value="false" />
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="false" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="preferences.keymap" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="spamhammer" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="true" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="options.searchVisible" value="true" />
@@ -430,8 +437,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="74" y="35" width="1450" height="963" extended-state="1" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1696" height="1026" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -443,7 +450,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32944787" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39956647" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32875723" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32822084" sideWeight="0.0" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Documentation" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="FLOATING" visible="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" x="179" y="135" width="1250" height="763" />
@@ -501,35 +508,37 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/SpamHammer.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/commands/SpamHammerPluginCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="201" column="80" selection-start="9315" selection-end="9315" vertical-scroll-proportion="0.0">
+        <state line="76" column="0" selection-start="2814" selection-end="2814" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/listeners/SpamHammerPlayerListener.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="48" column="98" selection-start="1930" selection-end="1930" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/config/ConfigPath.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="4" selection-start="1801" selection-end="1801" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/listeners/SpamHammerPlayerListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="62" selection-start="948" selection-end="948" vertical-scroll-proportion="0.0">
+        <state line="10" column="67" selection-start="407" selection-end="407" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/commands/SpamHammerPluginCommand.java">
+    <entry file="file://$PROJECT_DIR$/src/com/dumptruckman/spamhammer/SpamHammer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="56" column="56" selection-start="2191" selection-end="2191" vertical-scroll-proportion="0.0">
+        <state line="256" column="52" selection-start="11848" selection-end="11848" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/CHANGELOG">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="12" selection-start="12" selection-end="12" vertical-scroll-proportion="0.0">
+        <state line="1" column="56" selection-start="68" selection-end="68" vertical-scroll-proportion="0.020262217">
           <folding />
         </state>
       </provider>

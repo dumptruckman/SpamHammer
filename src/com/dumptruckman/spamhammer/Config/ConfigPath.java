@@ -7,6 +7,8 @@ public enum ConfigPath {
     MESSAGE_LIMIT ("Message Limit", "message.limit", 3),
     TIME_PERIOD ("Time Period", "message.period", 1),
     USE_MUTE ("Use Mute", "punishments.mute", true),
+    BLOCK_REPEATS("Block Repeat Messages", "message.repeat.block", true),
+    REPEAT_LIMIT ("Repeat Message Limit", "message.repeat.limit", 2),
     MUTE_LENGTH ("Mute Length", "mute.length", 30),
     MUTE_MESSAGE ("Mute Message", "mute.message.mute", "You will be muted for %t second(s) for spamming.  Keep it up and you'll be kicked."),
     UNMUTE_MESSAGE ("Un-Mute Message", "mute.message.unmute", "You are no longer muted."),

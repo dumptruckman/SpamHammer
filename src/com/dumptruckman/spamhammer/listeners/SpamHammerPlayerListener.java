@@ -43,8 +43,8 @@ public class SpamHammerPlayerListener extends PlayerListener {
             event.setCancelled(true);
             return;
         }
-        if (plugin.addChatMessage(event.getPlayer().getName())
-                && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
+        if (plugin.addChatMessage(event.getPlayer().getName(), event.getMessage())
+                && plugin.preventMessages) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.config.getString(RATE_LIMIT_MESSAGE.toString()));
         }
@@ -64,7 +64,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
             event.setCancelled(true);
             return;
         }
-        if (plugin.addChatMessage(event.getPlayer().getName())
+        if (plugin.addChatMessage(event.getPlayer().getName(), event.getMessage())
                 && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
             event.setCancelled(true);
             event.getPlayer().sendMessage(plugin.config.getString(RATE_LIMIT_MESSAGE.toString()));
