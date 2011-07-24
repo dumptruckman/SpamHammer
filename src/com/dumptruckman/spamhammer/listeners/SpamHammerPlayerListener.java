@@ -64,6 +64,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
             event.setCancelled(true);
             return;
         }
+        if (!plugin.spamCommands.contains(event.getMessage().split("\\s")[0])) return;
         if (plugin.addChatMessage(event.getPlayer().getName(), event.getMessage())
                 && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
             event.setCancelled(true);

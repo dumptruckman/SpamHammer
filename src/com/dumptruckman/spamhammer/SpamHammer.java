@@ -41,6 +41,7 @@ public class SpamHammer extends JavaPlugin {
     private Map<String, Long> actionTime;
     public List<String> beenMuted;
     public List<String> beenKicked;
+    public List<Object> spamCommands;
     private Timer timer;
 
     public SpamHammer() {
@@ -97,6 +98,10 @@ public class SpamHammer extends JavaPlugin {
         timePeriod = config.getInt(TIME_PERIOD.toString(), (Integer)TIME_PERIOD.getDefault()) * 1000;
         useRepeatLimit = Boolean.parseBoolean(config.getString(BLOCK_REPEATS.toString()));
         preventMessages = Boolean.parseBoolean(config.getString(PREVENT_MESSAGES.toString()));
+        spamCommands = config.getList(INCLUDE_COMMANDS.toString());
+        //for (int i = 0; i < spamCommands.size(); i++) {
+        //    spamCommands.set(i, spamCommands.get(i).toString().split("\\s"));
+        //}
         useBan = Boolean.parseBoolean(config.getString(USE_BAN.toString()));
         useKick = Boolean.parseBoolean(config.getString(USE_KICK.toString()));
         useMute = Boolean.parseBoolean(config.getString(USE_MUTE.toString()));
@@ -163,6 +168,9 @@ public class SpamHammer extends JavaPlugin {
         }
         if (config.getString(BLOCK_REPEATS.toString()) == null) {
             config.setProperty(BLOCK_REPEATS.toString(), BLOCK_REPEATS.getDefault());
+        }
+        if (config.getList(INCLUDE_COMMANDS.toString()) == null) {
+            config.setProperty(INCLUDE_COMMANDS.toString(), INCLUDE_COMMANDS.getDefault());
         }
         if (config.getString(USE_MUTE.toString()) == null) {
             config.setProperty(USE_MUTE.toString(), USE_MUTE.getDefault());

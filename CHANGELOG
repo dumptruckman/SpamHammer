@@ -1,3 +1,6 @@
+Version 1.7a
+    No longer considers all commands for spam blocking by default.  Added spammable command list to config where you should add commands that could be considered spam.
+
 Version 1.6
     Added back repeat message block as a default option.
 
