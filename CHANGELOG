@@ -1,3 +1,6 @@
+Version 1.7b
+    Now has option to not use permissions and instead use OP only for the commands.  This will allow for greater compatability.
+
 Version 1.7a
     No longer considers all commands for spam blocking by default.  Added spammable command list to config where you should add commands that could be considered spam.
 

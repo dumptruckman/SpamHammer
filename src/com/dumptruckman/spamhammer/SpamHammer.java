@@ -42,6 +42,7 @@ public class SpamHammer extends JavaPlugin {
     public List<String> beenMuted;
     public List<String> beenKicked;
     public List<Object> spamCommands;
+    public boolean usePerms;
     private Timer timer;
 
     public SpamHammer() {
@@ -105,6 +106,7 @@ public class SpamHammer extends JavaPlugin {
         useBan = Boolean.parseBoolean(config.getString(USE_BAN.toString()));
         useKick = Boolean.parseBoolean(config.getString(USE_KICK.toString()));
         useMute = Boolean.parseBoolean(config.getString(USE_MUTE.toString()));
+        usePerms = config.getBoolean(USE_PERMS.toString(), (Boolean)USE_PERMS.getDefault());
         config.save();
     }
 

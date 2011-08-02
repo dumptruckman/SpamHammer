@@ -6,6 +6,7 @@ import java.util.Arrays;
  * @author dumptruckman
  */
 public enum ConfigPath {
+    USE_PERMS("Use Permissions", "usepermissions", true),
     MESSAGE_LIMIT ("Message Limit", "message.limit", 3),
     TIME_PERIOD ("Time Period", "message.period", 1),
     BLOCK_REPEATS("Block Repeat Messages", "message.repeat.block", true),

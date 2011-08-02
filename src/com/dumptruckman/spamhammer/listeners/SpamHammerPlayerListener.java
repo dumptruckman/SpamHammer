@@ -26,7 +26,8 @@ public class SpamHammerPlayerListener extends PlayerListener {
 
     @Override
     public void onPlayerChat(PlayerChatEvent event) {
-        if (event.getPlayer().hasPermission("spamhammer.ignore")) return;
+        if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
+            return;
         //Check for bukkitcontrib
         Plugin BC = plugin.getServer().getPluginManager().getPlugin("BukkitContrib");
         if (BC != null) {
@@ -58,7 +59,8 @@ public class SpamHammerPlayerListener extends PlayerListener {
     }
 
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (event.getPlayer().isOp()) return;
+        if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
+            return;
         if (plugin.isMuted(event.getPlayer().getName())) {
             event.getPlayer().sendMessage(plugin.config.getString(MUTED_MESSAGE.toString()));
             event.setCancelled(true);
