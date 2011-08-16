@@ -8,6 +8,12 @@ import org.bukkit.event.Event.Type;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.util.config.Configuration;
+//added for herochat hooking
+import org.bukkit.plugin.Plugin;
+import com.herocraftonline.dthielke.herochat.*;
+import com.herocraftonline.dthielke.herochat.channels.ChannelManager;
+//added for console commands
+import org.bukkit.command.ConsoleCommandSender;
 
 import java.io.File;
 import java.util.*;
@@ -19,6 +25,9 @@ import static com.dumptruckman.spamhammer.config.ConfigPath.*;
  * @author dumptruckman
  */
 public class SpamHammer extends JavaPlugin {
+	
+	//create herochat hook
+	public static HeroChat HeroChatHook;
 
     private final static String PLUGIN_NAME = "SpamHammer";
     public static final Logger log = Logger.getLogger("Minecraft.SpamHammer");
@@ -83,10 +92,29 @@ public class SpamHammer extends JavaPlugin {
 
         // Display enable message/version info
         log.info(PLUGIN_NAME + " " + getDescription().getVersion() + " enabled.");
+        
+        //added for HC hook
+        initHeroChatHook();
     }
 
     final public void onDisable() {
         log.info(PLUGIN_NAME + " " + getDescription().getVersion() + " disabled.");
+    }
+    
+    private void initHeroChatHook() { 
+    	
+    	//if herochat is already hooked, do nothing
+    	if (HeroChatHook != null) { return; }
+    	//else hook into it
+    	Plugin HeroChatPlugin = this.getServer().getPluginManager().getPlugin("HeroChat");
+    	//if herochat isn't enabled | doesn't exist, log then do nothing
+    	if (HeroChatPlugin == null) {
+    		log.info(PLUGIN_NAME + " HeroChat not detected (!hooking)");
+    	    return;
+    	}
+    	//if herochat was successfully hooked
+    	HeroChatHook = ((HeroChat) HeroChatPlugin);
+    	log.info(PLUGIN_NAME + " HeroChat detected; hooking: "+((HeroChat)HeroChatPlugin).getDescription().getFullName());
     }
 
     final public void reload() {
@@ -330,20 +358,39 @@ public class SpamHammer extends JavaPlugin {
     public boolean beenKicked(String name) {
         return beenKicked.contains(name);
     }
+    
+    public void HeroChatMuteToggle(String name)
+    {
+    	ChannelManager cm = HeroChatHook.getChannelManager();
+        if (cm.getMutelist().contains(name)) {
+            cm.getMutelist().remove(name);
+            this.getServer().broadcastMessage("§c"+name + " has been unmuted.");
+        } else {
+            cm.getMutelist().add(name);
+            this.getServer().broadcastMessage("§c"+name + " has been Muted for "+config.getString(MUTE_LENGTH.toString())+" second(s): Spam");
+        }
+    }
 
     public void mutePlayer(String name) {
         mutedPlayers.add(name);
         beenMuted.add(name);
         actionTime.put(name, System.currentTimeMillis() / 1000);
-        String message = config.getString(MUTE_MESSAGE.toString());
+        String message = "§c"+config.getString(MUTE_MESSAGE.toString());
         message = message.replace("%t", config.getString(MUTE_LENGTH.toString()));
         getServer().getPlayer(name).sendMessage(message);
+        //HeroChat Hook
+        if(HeroChatHook != null){ HeroChatMuteToggle(name); }        
     }
 
     public void unMutePlayer(String name) {
         mutedPlayers.remove(name);
         if (getServer().getPlayer(name) != null) {
-            getServer().getPlayer(name).sendMessage(config.getString(UNMUTE_MESSAGE.toString()));
+            getServer().getPlayer(name).sendMessage("§c"+config.getString(UNMUTE_MESSAGE.toString()));
+        }
+        //HeroChat Hook
+        if(HeroChatHook != null)
+        {
+        	HeroChatMuteToggle(name);
         }
     }
 
@@ -351,13 +398,30 @@ public class SpamHammer extends JavaPlugin {
         beenKicked.add(name);
         actionTime.put(name, System.currentTimeMillis() / 1000);
         if (getServer().getPlayer(name) != null) {
-            getServer().getPlayer(name).kickPlayer(config.getString(KICK_MESSAGE.toString()));
+            //getServer().getPlayer(name).kickPlayer(config.getString(KICK_MESSAGE.toString()));
+            this.getServer().dispatchCommand(new ConsoleCommandSender(this.getServer())
+            {
+                @Override
+                public void sendMessage(String message)
+                {
+                    //here you can get a message sent back
+                }
+            },"kick "+name+" "+config.getString(KICK_MESSAGE.toString()));
         }
     }
 
     public void banPlayer(String name) {
         if (getServer().getPlayer(name) != null) {
-            getServer().getPlayer(name).kickPlayer(config.getString(BAN_MESSAGE.toString()));
+            //getServer().getPlayer(name).kickPlayer(config.getString(BAN_MESSAGE.toString()));
+            this.getServer().dispatchCommand(new ConsoleCommandSender(this.getServer())
+            {
+                @Override
+                public void sendMessage(String message)
+                {
+                    //here you can get a message sent back
+                }
+            },"kick "+name+" "+config.getString(BAN_MESSAGE.toString()));
+            this.getServer().broadcastMessage("§c"+name + " has been Banned for Spamming");
         }
         List<Object> bannedplayers = banList.getList("banned");
         if (bannedplayers == null) bannedplayers = new ArrayList<Object>();
@@ -387,7 +451,7 @@ public class SpamHammer extends JavaPlugin {
                 if (beenKicked(player)) beenKicked.remove(player);
                 if (beenMuted(player)) {
                     if (getServer().getPlayer(player) != null) {
-                        getServer().getPlayer(player).sendMessage(config.getString(COOL_OFF_MESSAGE.toString()));
+                        getServer().getPlayer(player).sendMessage("§a"+config.getString(COOL_OFF_MESSAGE.toString()));
                     }
                     beenMuted.remove(player);
                 }
