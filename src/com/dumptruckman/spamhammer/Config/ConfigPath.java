@@ -6,6 +6,8 @@ package com.dumptruckman.spamhammer.config;
 public enum ConfigPath {
     MESSAGE_LIMIT ("Message Limit", "message.limit", 3),
     TIME_PERIOD ("Time Period", "message.period", 1),
+    REPEAT_MESSAGE_LIMIT ("Repeated Message Limit", "message.repeatlimit", 8),
+    REPEAT_TIME_PERIOD ("Repetition Time Period", "message.repeatperiod", 40),
     USE_MUTE ("Use Mute", "punishments.mute", true),
     MUTE_LENGTH ("Mute Length", "mute.length", 30),
     MUTE_MESSAGE ("Mute Message", "mute.message.mute", "You will be muted for %t second(s) for spamming.  Keep it up and you'll be kicked."),

@@ -29,10 +29,13 @@ public class SpamHammer extends JavaPlugin {
     public Configuration banList;
     private int messagelimit;
     private long timeperiod;
+    private int repeatMessageLimit;
+    private long repeatTimePeriod;
     private boolean useMute;
     private boolean useBan;
     private boolean useKick;
     private Map<String, ArrayDeque<Long>> playerChatTimes;
+    private Map<String, PlayerChatRepetition> playerRepeatedMsgs;
     private List<String> mutedPlayers;
     private Map<String, Long> actionTime;
     public List<String> beenMuted;
@@ -41,6 +44,7 @@ public class SpamHammer extends JavaPlugin {
 
     public SpamHammer() {
         playerChatTimes = new HashMap<String, ArrayDeque<Long>>();
+        playerRepeatedMsgs = new HashMap<String, PlayerChatRepetition>();
         mutedPlayers = new ArrayList<String>();
         beenMuted = new ArrayList<String>();
         beenKicked = new ArrayList<String>();
@@ -89,6 +93,8 @@ public class SpamHammer extends JavaPlugin {
 
         messagelimit = config.getInt(MESSAGE_LIMIT.toString(), 3);
         timeperiod = config.getInt(TIME_PERIOD.toString(), 1) * 1000;
+        repeatMessageLimit = config.getInt(REPEAT_MESSAGE_LIMIT.toString(), 8);
+        repeatTimePeriod =  config.getInt(REPEAT_TIME_PERIOD.toString(), 40) * 1000;
         useBan = Boolean.parseBoolean(config.getString(USE_BAN.toString()));
         useKick = Boolean.parseBoolean(config.getString(USE_KICK.toString()));
         useMute = Boolean.parseBoolean(config.getString(USE_MUTE.toString()));
@@ -123,6 +129,34 @@ public class SpamHammer extends JavaPlugin {
                 log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + TIME_PERIOD.getName() + "'."
                         + "  Setting to default: " + TIME_PERIOD.getDefault());
                 config.setProperty(TIME_PERIOD.toString(), TIME_PERIOD.getDefault());
+            }
+        }
+        if (config.getString(REPEAT_MESSAGE_LIMIT.toString()) == null) {
+            config.setProperty(REPEAT_MESSAGE_LIMIT.toString(), REPEAT_MESSAGE_LIMIT.getDefault());
+        } else {
+            try {
+                int temp = Integer.parseInt(config.getString(REPEAT_MESSAGE_LIMIT.toString()));
+                if (temp < 0) {
+                    throw new NumberFormatException("negative");
+                }
+            } catch (NumberFormatException nfe) {
+                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + REPEAT_MESSAGE_LIMIT.getName() + "'."
+                        + "  Setting to default: " + REPEAT_MESSAGE_LIMIT.getDefault());
+                config.setProperty(REPEAT_MESSAGE_LIMIT.toString(), REPEAT_MESSAGE_LIMIT.getDefault());
+            }
+        }
+        if (config.getString(REPEAT_TIME_PERIOD.toString()) == null) {
+            config.setProperty(REPEAT_TIME_PERIOD.toString(), REPEAT_TIME_PERIOD.getDefault());
+        } else {
+            try {
+                int temp = Integer.parseInt(config.getString(REPEAT_TIME_PERIOD.toString()));
+                if (temp < 0) {
+                    throw new NumberFormatException("negative");
+                }
+            } catch (NumberFormatException nfe) {
+                log.warning("[" + PLUGIN_NAME + "] Invalid setting for '" + REPEAT_TIME_PERIOD.getName() + "'."
+                        + "  Setting to default: " + REPEAT_TIME_PERIOD.getDefault());
+                config.setProperty(REPEAT_TIME_PERIOD.toString(), REPEAT_TIME_PERIOD.getDefault());
             }
         }
         if (config.getString(MUTE_LENGTH.toString()) == null) {
@@ -203,25 +237,30 @@ public class SpamHammer extends JavaPlugin {
         }
     }
 
-    public boolean addChatMessage(String name) {
-        ArrayDeque<Long> times = playerChatTimes.get(name);
-        if (times == null) times = new ArrayDeque<Long>();
+    public boolean addChatMessage(String name, String message) {
+        boolean isSpamming = false;
+        
+    	// handle fast messages
+        ArrayDeque<Long> times = getPlayerChatTimes(name);
         long curtime = System.currentTimeMillis();
         times.add(curtime);
-        if (times.size() > messagelimit) {
-            times.remove();
+        while (times.getLast() - times.getFirst() > timeperiod) {
+        	times.removeFirst();
         }
-        long timediff = times.getLast() - times.getFirst();
-        if (timediff > timeperiod) {
-            times.clear();
-            times.add(curtime);
-        }
-        boolean isSpamming = false;
-        if (times.size() == messagelimit) {
+        if (times.size() >= messagelimit) {
             playerIsSpamming(name);
             isSpamming = true;
         }
-        playerChatTimes.put(name, times);
+
+        // handle repetition, if not obviously spamming already
+        if (!isSpamming) {
+            PlayerChatRepetition rep = getPlayerChatRepetition(name);
+        	rep.addMessage(message, repeatMessageLimit, repeatTimePeriod);
+        	if (rep.isSpamming()) {
+        		playerIsSpamming(name);
+        		isSpamming = true;
+        	}
+        }
         return isSpamming;
     }
 
@@ -319,5 +358,33 @@ public class SpamHammer extends JavaPlugin {
                 }
             }
         }
+    }
+    
+    protected ArrayDeque<Long> getPlayerChatTimes(String name) {
+    	// get repetition log by player name
+    	ArrayDeque<Long> times = playerChatTimes.get(name);
+        
+        // if it doesn't exist, create and store it
+        if (times == null) {
+        	times = new ArrayDeque<Long>();
+        	playerChatTimes.put(name, times);
+        }
+        
+        // return it in either case 
+        return times;
+    }
+    
+    protected PlayerChatRepetition getPlayerChatRepetition(String name) {
+    	// get repetition log by player name
+        PlayerChatRepetition rep = playerRepeatedMsgs.get(name);
+        
+        // if it doesn't exist, create and store it
+        if (rep == null) {
+        	rep = new PlayerChatRepetition();
+        	playerRepeatedMsgs.put(name, rep);
+        }
+        
+        // return it in either case 
+        return rep;
     }
 }
