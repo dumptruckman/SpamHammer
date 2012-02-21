@@ -1,8 +1,11 @@
 package com.dumptruckman.spamhammer.listeners;
 
+import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import com.dumptruckman.spamhammer.config.ConfigPath;
-import com.dumptruckman.spamhammer.SpamHammer;
+import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import com.sun.xml.internal.ws.client.SenderException;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerListener;
@@ -16,15 +19,15 @@ import static com.dumptruckman.spamhammer.config.ConfigPath.*;
 /**
  * @author dumptruckman
  */
-public class SpamHammerPlayerListener extends PlayerListener {
+public class SpamHammerPlayerListener implements Listener {
 
-    private SpamHammer plugin;
+    private SpamHammerPlugin plugin;
 
-    public SpamHammerPlayerListener(SpamHammer plugin) {
+    public SpamHammerPlayerListener(SpamHammerPlugin plugin) {
         this.plugin = plugin;
     }
 
-    @Override
+    @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
             return;
@@ -51,6 +54,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (plugin.isBanned(event.getPlayer().getName())) {
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
@@ -58,6 +62,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
         }
     }
 
+    @EventHandler
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
             return;

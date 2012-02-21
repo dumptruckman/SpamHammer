@@ -1,12 +1,11 @@
 package com.dumptruckman.spamhammer.command;
 
-import com.dumptruckman.simplecircuits.SimpleCircuitsPlugin;
-import com.dumptruckman.simplecircuits.util.locale.Message;
-import com.dumptruckman.simplecircuits.util.Perm;
-import com.dumptruckman.simplecircuits.util.Logging;
+import com.dumptruckman.spamhammer.SpamHammerPlugin;
+import com.dumptruckman.spamhammer.util.Logging;
+import com.dumptruckman.spamhammer.util.Perm;
+import com.dumptruckman.spamhammer.util.locale.Message;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-
 
 import java.util.List;
 
@@ -15,15 +14,15 @@ import java.util.List;
  */
 public class DebugCommand extends PluginCommand {
 
-    public DebugCommand(SimpleCircuitsPlugin plugin) {
+    public DebugCommand(SpamHammerPlugin plugin) {
         super(plugin);
         this.setName("Turn Debug on/off?");
-        this.setCommandUsage("/sc debug" + ChatColor.GOLD + " [1|2|3|off]");
+        this.setCommandUsage("/spam debug" + ChatColor.GOLD + " [1|2|3|off]");
         this.setArgRange(0, 1);
-        this.addKey("sc debug");
-        this.addKey("sc d");
-        this.addKey("scdebug");
-        this.addKey("scd");
+        this.addKey("spam debug");
+        this.addKey("spam d");
+        this.addKey("spamdebug");
+        this.addKey("spamd");
         this.addCommandExample("/pt debug " + ChatColor.GOLD + "2");
         this.setPermission(Perm.COMMAND_DEBUG.getPermission());
     }

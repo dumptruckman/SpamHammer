@@ -1,8 +1,8 @@
 package com.dumptruckman.spamhammer.util;
 
-import com.dumptruckman.chestrestock.api.ChestRestock;
-import com.dumptruckman.chestrestock.api.Config;
+import com.dumptruckman.spamhammer.api.Config;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 
@@ -18,7 +18,7 @@ public class CommentedConfig implements Config {
         /**
          * Add a comment to the top of file.
          */
-        SETTINGS("settings", null, "# ===[ SimpleCircuits Config ]==="),
+        SETTINGS("settings", null, "# ===[ SpamHammer Config ]==="),
         /**
          * Locale name config path, default and comments.
          */
@@ -78,9 +78,9 @@ public class CommentedConfig implements Config {
     }
 
     private CommentedYamlConfiguration config;
-    private ChestRestock plugin;
+    private Plugin plugin;
 
-    public CommentedConfig(ChestRestock plugin) throws Exception {
+    public CommentedConfig(Plugin plugin) throws Exception {
         this.plugin = plugin;
         // Make the data folders
         if (this.plugin.getDataFolder().mkdirs()) {

@@ -1,8 +1,8 @@
 package com.dumptruckman.spamhammer.command;
 
-import com.dumptruckman.simplecircuits.SimpleCircuitsPlugin;
-import com.dumptruckman.simplecircuits.util.locale.Message;
-import com.dumptruckman.simplecircuits.util.Perm;
+import com.dumptruckman.spamhammer.SpamHammerPlugin;
+import com.dumptruckman.spamhammer.util.Perm;
+import com.dumptruckman.spamhammer.util.locale.Message;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -12,13 +12,13 @@ import java.util.List;
  */
 public class ReloadCommand extends PluginCommand {
 
-    public ReloadCommand(SimpleCircuitsPlugin plugin) {
+    public ReloadCommand(SpamHammerPlugin plugin) {
         super(plugin);
         this.setName("Reloads config file");
-        this.setCommandUsage("/sc reload");
+        this.setCommandUsage("/spam reload");
         this.setArgRange(0, 0);
-        this.addKey("sc reload");
-        this.addKey("screload");
+        this.addKey("spam reload");
+        this.addKey("spamreload");
         this.setPermission(Perm.COMMAND_RELOAD.getPermission());
     }
 

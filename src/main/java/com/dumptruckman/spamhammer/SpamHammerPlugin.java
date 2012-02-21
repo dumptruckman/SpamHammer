@@ -1,32 +1,36 @@
 package com.dumptruckman.spamhammer;
 
-import com.dumptruckman.spamhammer.commands.SpamHammerPluginCommand;
+import com.dumptruckman.spamhammer.api.BanData;
+import com.dumptruckman.spamhammer.api.Config;
+import com.dumptruckman.spamhammer.api.SpamHammer;
+import com.dumptruckman.spamhammer.command.SpamHammerPluginCommand;
 import com.dumptruckman.spamhammer.listeners.SpamHammerPlayerListener;
-import com.dumptruckman.util.io.ConfigIO;
-import org.bukkit.event.Event;
-import org.bukkit.event.Event.Type;
-import org.bukkit.plugin.PluginManager;
+import com.dumptruckman.spamhammer.util.CommentedConfig;
+import com.dumptruckman.spamhammer.util.Logging;
+import com.dumptruckman.spamhammer.util.Perm;
+import com.dumptruckman.spamhammer.util.PermHandler;
+import com.dumptruckman.spamhammer.util.YamlBanData;
+import com.dumptruckman.spamhammer.util.locale.Messager;
+import com.dumptruckman.spamhammer.util.locale.SimpleMessager;
+import com.pneumaticraft.commandhandler.CommandHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.config.Configuration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
-
-import static com.dumptruckman.spamhammer.config.ConfigPath.*;
 
 /**
  * @author dumptruckman
  */
-public class SpamHammerPlugin extends JavaPlugin {
+public class SpamHammerPlugin extends JavaPlugin implements SpamHammer {
 
-    private final static String PLUGIN_NAME = "SpamHammer";
-    public static final Logger log = Logger.getLogger("Minecraft.SpamHammer");
+    private Config config;
+    private BanData data;
+    private CommandHandler commandHandler;
+    private Messager messager = new SimpleMessager(this);
+    private File serverFolder = new File(System.getProperty("user.dir"));
 
-    public final SpamHammerPlayerListener playerListener = new SpamHammerPlayerListener(this);
-
-    public Configuration config;
-    public Configuration banList;
     private int messageLimit;
     private long timePeriod;
     private int repeatLimit;
@@ -54,21 +58,36 @@ public class SpamHammerPlugin extends JavaPlugin {
         actionTime = new HashMap<String, Long>();
     }
 
+    final public void onDisable() {
+        Logging.info("disabled.", true);
+    }
+
     final public void onEnable() {
-        // Make the data folders that dChest uses
-        getDataFolder().mkdirs();
+        Logging.init(this);
+        Perm.register(this);
 
-        // Grab the PluginManager
-        final PluginManager pm = getServer().getPluginManager();
+        this.commandHandler = new CommandHandler(this, new PermHandler());
 
-        // Register event
-        pm.registerEvent(Type.PLAYER_CHAT, playerListener, Event.Priority.High, this);
-        pm.registerEvent(Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.High, this);
-        pm.registerEvent(Type.PLAYER_LOGIN, playerListener, Event.Priority.Normal, this);
+        try {
+            this.getMessager().setLocale(new Locale(this.getSettings().getLocale()));
+        } catch (IllegalArgumentException e) {
+            Logging.severe(e.getMessage());
+            this.getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
 
-        reload();
+        this.reloadConfig();
 
-        // Register command executor for commands
+        getServer().getPluginManager().registerEvents(new SpamHammerPlayerListener(this), this);
+
+        // Register Commands
+        this.registerCommands();
+
+        // Display enable message/version info
+        Logging.info("enabled.", true);
+
+
+        // Register command executor for command
         getCommand("spamunban").setExecutor(new SpamHammerPluginCommand(this));
         getCommand("spamunmute").setExecutor(new SpamHammerPluginCommand(this));
         getCommand("spamreset").setExecutor(new SpamHammerPluginCommand(this));
@@ -81,16 +100,112 @@ public class SpamHammerPlugin extends JavaPlugin {
             }
         }, 0, 1000);
 
-        // Display enable message/version info
-        log.info(PLUGIN_NAME + " " + getDescription().getVersion() + " enabled.");
     }
 
-    final public void onDisable() {
-        log.info(PLUGIN_NAME + " " + getDescription().getVersion() + " disabled.");
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CommandHandler getCommandHandler() {
+        return this.commandHandler;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Config getSettings() {
+        if (this.config == null) {
+            // Loads the configuration
+            try {
+                this.config = new CommentedConfig(this);
+                Logging.fine("Loaded config file!");
+            } catch (Exception e) {  // Catch errors loading the config file and exit out if found.
+                Logging.severe("Error loading config file!");
+                Logging.severe(e.getMessage());
+                Bukkit.getPluginManager().disablePlugin(this);
+                return null;
+            }
+        }
+        return this.config;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BanData getData() {
+        if (this.data == null) {
+            // Loads the data
+            try {
+                this.data = new YamlBanData(this);
+            } catch (IOException e) {  // Catch errors loading the language file and exit out if found.
+                Logging.severe("Error loading data file!");
+                Logging.severe(e.getMessage());
+                Bukkit.getPluginManager().disablePlugin(this);
+                return null;
+            }
+        }
+        return this.data;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Messager getMessager() {
+        return messager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMessager(Messager messager) {
+        if (messager == null)
+            throw new IllegalArgumentException("The new messager can't be null!");
+
+        this.messager = messager;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public File getServerFolder() {
+        return serverFolder;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setServerFolder(File newServerFolder) {
+        if (!newServerFolder.isDirectory())
+            throw new IllegalArgumentException("That's not a folder!");
+
+        this.serverFolder = newServerFolder;
+    }
+
+    /**
+     * Nulls the config object and reloads a new one.
+     */
+    @Override
+    public void reloadConfig() {
+        this.config = null;
+
+        // Do any import first run stuff here.
+        if (this.getSettings().isFirstRun()) {
+            Logging.info("First run!");
+        }
+    }
+
+    private void registerCommands() {
+        this.commandHandler.registerCommand(new DebugCommand(this));
+        this.commandHandler.registerCommand(new ReloadCommand(this));
     }
 
     final public void reload() {
-        config = new ConfigIO(new File(this.getDataFolder(), "config.yml")).load();
         banList = new ConfigIO(new File(this.getDataFolder(), "banlist.yml")).load();
         setDefaults();
 

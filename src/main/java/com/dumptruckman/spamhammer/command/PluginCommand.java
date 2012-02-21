@@ -1,7 +1,7 @@
 package com.dumptruckman.spamhammer.command;
 
-import com.dumptruckman.simplecircuits.SimpleCircuitsPlugin;
-import com.dumptruckman.simplecircuits.util.locale.Messager;
+import com.dumptruckman.spamhammer.SpamHammerPlugin;
+import com.dumptruckman.spamhammer.util.locale.Messager;
 import com.pneumaticraft.commandhandler.Command;
 import org.bukkit.command.CommandSender;
 
@@ -15,13 +15,13 @@ public abstract class PluginCommand extends Command {
     /**
      * The reference to the core.
      */
-    protected SimpleCircuitsPlugin plugin;
+    protected SpamHammerPlugin plugin;
     /**
      * The reference to {@link Messager}.
      */
     protected Messager messager;
 
-    public PluginCommand(SimpleCircuitsPlugin plugin) {
+    public PluginCommand(SpamHammerPlugin plugin) {
         super(plugin);
         this.plugin = plugin;
         this.messager = this.plugin.getMessager();

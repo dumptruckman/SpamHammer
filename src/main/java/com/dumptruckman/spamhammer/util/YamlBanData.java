@@ -21,10 +21,10 @@ public class YamlBanData implements BanData {
         plugin.getDataFolder().mkdirs();
 
         // Check if the data file exists.  If not, create it.
-        this.chestFolder = new File(plugin.getDataFolder(), "chests");
+        this.chestFolder = new File(plugin.getDataFolder(), "banlist.yml");
         if (!this.chestFolder.exists()) {
             if (!this.chestFolder.mkdirs()) {
-                throw new IOException("Could not create chest folder!");
+                throw new IOException("Could not create banlist folder!");
             }
         }
     }

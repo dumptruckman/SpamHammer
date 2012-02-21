@@ -1,6 +1,6 @@
 name: SpamHammer
 main: com.dumptruckman.spamhammer.SpamHammer
-version: 1.7b
+version: maven-version-number
 author: dumptruckman
 
 commands:

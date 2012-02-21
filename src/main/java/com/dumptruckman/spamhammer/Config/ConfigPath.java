@@ -25,11 +25,11 @@ public enum ConfigPath {
     COOL_OFF_MESSAGE ("Cool Off Message", "cooloff.message", "Spamming punishment reset.  Be nice!"),
     PREVENT_MESSAGES ("Prevent Messages Above Limit", "message.preventabovelimit", true),
     RATE_LIMIT_MESSAGE ( "Rate Limit Exceeded Message", "abovelimit.message", "You are typing too fast!"),
-    UNMUTE_COMMAND_MESSAGE_SUCCESS ("Unmute Command Success Message", "commands.unmute.success", "Player has been unmuted."),
-    UNMUTE_COMMAND_MESSAGE_FAILURE ("Unmute Command Failure Message", "commands.unmute.failure", "Player is not muted."),
-    UNBAN_COMMAND_MESSAGE_SUCCESS ("Unban Command Success Message", "commands.unban.success", "Player has been unbanned"),
-    UNBAN_COMMAND_MESSAGE_FAILURE ("Unban Command Failure Message", "commands.unban.failure", "Player is not banned by SpamHammer."),
-    RESET_COMMAND_MESSAGE_SUCCESS ("Reset Command Success Message", "commands.reset.success", "Player's punishment level reset.");
+    UNMUTE_COMMAND_MESSAGE_SUCCESS ("Unmute Command Success Message", "command.unmute.success", "Player has been unmuted."),
+    UNMUTE_COMMAND_MESSAGE_FAILURE ("Unmute Command Failure Message", "command.unmute.failure", "Player is not muted."),
+    UNBAN_COMMAND_MESSAGE_SUCCESS ("Unban Command Success Message", "command.unban.success", "Player has been unbanned"),
+    UNBAN_COMMAND_MESSAGE_FAILURE ("Unban Command Failure Message", "command.unban.failure", "Player is not banned by SpamHammer."),
+    RESET_COMMAND_MESSAGE_SUCCESS ("Reset Command Success Message", "command.reset.success", "Player's punishment level reset.");
 
     private String name;
     private Object def;
