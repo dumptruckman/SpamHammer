@@ -1,12 +1,9 @@
-package com.dumptruckman.spamhammer.commands;
+package com.dumptruckman.spamhammer.command;
 
-import com.dumptruckman.spamhammer.SpamHammer;
+import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 import static com.dumptruckman.spamhammer.config.ConfigPath.*;
 
@@ -15,9 +12,9 @@ import static com.dumptruckman.spamhammer.config.ConfigPath.*;
  */
 public class SpamHammerPluginCommand implements CommandExecutor {
 
-    SpamHammer plugin;
+    SpamHammerPlugin plugin;
 
-    public SpamHammerPluginCommand(SpamHammer plugin) {
+    public SpamHammerPluginCommand(SpamHammerPlugin plugin) {
         this.plugin = plugin;
     }
 

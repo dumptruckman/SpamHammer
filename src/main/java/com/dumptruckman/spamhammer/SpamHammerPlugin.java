@@ -18,7 +18,7 @@ import static com.dumptruckman.spamhammer.config.ConfigPath.*;
 /**
  * @author dumptruckman
  */
-public class SpamHammer extends JavaPlugin {
+public class SpamHammerPlugin extends JavaPlugin {
 
     private final static String PLUGIN_NAME = "SpamHammer";
     public static final Logger log = Logger.getLogger("Minecraft.SpamHammer");
@@ -45,7 +45,7 @@ public class SpamHammer extends JavaPlugin {
     public boolean usePerms;
     private Timer timer;
 
-    public SpamHammer() {
+    public SpamHammerPlugin() {
         playerChatTimes = new HashMap<String, ArrayDeque<Long>>();
         playerChatHistory = new HashMap<String, ArrayDeque<String>>();
         mutedPlayers = new ArrayList<String>();
@@ -77,7 +77,7 @@ public class SpamHammer extends JavaPlugin {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                SpamHammer.this.checkTimes();
+                SpamHammerPlugin.this.checkTimes();
             }
         }, 0, 1000);
 
