@@ -2,6 +2,7 @@ name: SpamHammer
 main: com.dumptruckman.spamhammer.SpamHammer
 version: maven-version-number
 author: dumptruckman
+softdepend: [SpoutPlugin]
 
 commands:
   spamunban:

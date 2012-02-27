@@ -1,81 +1,79 @@
 package com.dumptruckman.spamhammer.listeners;
 
-import com.dumptruckman.spamhammer.SpamHammerPlugin;
-import com.dumptruckman.spamhammer.config.ConfigPath;
-import com.dumptruckman.spamhammer.SpamHammerPlugin;
-import com.sun.xml.internal.ws.client.SenderException;
+import com.dumptruckman.spamhammer.api.Config;
+import com.dumptruckman.spamhammer.api.SpamHammer;
+import com.dumptruckman.spamhammer.api.SpamHandler;
+import com.dumptruckman.spamhammer.util.Language;
+import com.dumptruckman.spamhammer.util.Perms;
+import com.dumptruckman.tools.locale.Messager;
+import com.dumptruckman.tools.permission.Perm;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkitcontrib.player.ContribPlayer;
-
-import static com.dumptruckman.spamhammer.config.ConfigPath.*;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**
  * @author dumptruckman
  */
 public class SpamHammerPlayerListener implements Listener {
 
-    private SpamHammerPlugin plugin;
+    private SpamHammer plugin;
+    private SpamHandler handler;
+    private Config config;
+    private Messager messager;
 
-    public SpamHammerPlayerListener(SpamHammerPlugin plugin) {
+    public SpamHammerPlayerListener(SpamHammer<Config> plugin) {
         this.plugin = plugin;
+        this.handler = plugin.getSpamHandler();
+        this.config = plugin.config();
+        this.messager = plugin.getMessager();
     }
 
-    @EventHandler
+    @EventHandler()
     public void onPlayerChat(PlayerChatEvent event) {
-        if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
-            return;
-        //Check for bukkitcontrib
-        Plugin BC = plugin.getServer().getPluginManager().getPlugin("BukkitContrib");
-        if (BC != null) {
-        	if (event.getPlayer() instanceof ContribPlayer) {
-        		ContribPlayer plyr = (ContribPlayer)event.getPlayer();
-        		if (plyr.isBukkitContribEnabled()) {
+        if (plugin.isUsingSpout()) {
+        	if (event.getPlayer() instanceof SpoutPlayer) {
+                SpoutPlayer plyr = (SpoutPlayer)event.getPlayer();
+        		if (plyr.isSpoutCraftEnabled()) {
                     // This plugin may incorrectly punish bukkitcontrib players. Therefore it doesn't work on them.
         			return;
         		}
         	}
         }
-        if (plugin.isMuted(event.getPlayer().getName())) {
-            event.getPlayer().sendMessage(plugin.config.getString(MUTED_MESSAGE.toString()));
+        if (handler.isMuted(event.getPlayer()) && !Perms.BYPASS_MUTE.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
+            messager.bad(Language.MUTED, event.getPlayer());
             return;
         }
-        if (plugin.addChatMessage(event.getPlayer().getName(), event.getMessage())
-                && plugin.preventMessages) {
+        if (handler.handleChat(event.getPlayer(), event.getMessage())
+                && config.get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(plugin.config.getString(RATE_LIMIT_MESSAGE.toString()));
+            messager.bad(Language.RATE_LIMIT_MESSAGE, event.getPlayer());
         }
     }
 
     @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
-        if (plugin.isBanned(event.getPlayer().getName())) {
-            event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
-                    plugin.config.getString(BAN_MESSAGE.toString()));
+        if (event.getPlayer().isBanned()) {
+            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, plugin.getMessager().getMessage(Language.BAN_MESSAGE));
         }
     }
 
     @EventHandler
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
-            return;
-        if (plugin.isMuted(event.getPlayer().getName())) {
-            event.getPlayer().sendMessage(plugin.config.getString(MUTED_MESSAGE.toString()));
+        if (handler.isMuted(event.getPlayer()) && !Perms.BYPASS_MUTE.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
+            messager.bad(Language.MUTED, event.getPlayer());
             return;
         }
-        if (!plugin.spamCommands.contains(event.getMessage().split("\\s")[0])) return;
-        if (plugin.addChatMessage(event.getPlayer().getName(), event.getMessage())
-                && Boolean.parseBoolean(plugin.config.getString(PREVENT_MESSAGES.toString()))) {
+        if (!config.get(Config.INCLUDE_COMMANDS).contains(event.getMessage().split("\\s")[0])) return;
+        if (handler.handleChat(event.getPlayer(), event.getMessage())
+                && config.get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(plugin.config.getString(RATE_LIMIT_MESSAGE.toString()));
+            messager.bad(Language.RATE_LIMIT_MESSAGE, event.getPlayer());
         }
     }
 }
