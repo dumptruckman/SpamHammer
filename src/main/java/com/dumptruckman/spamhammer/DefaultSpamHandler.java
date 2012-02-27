@@ -143,6 +143,14 @@ class DefaultSpamHandler implements SpamHandler {
             messager.normal(Language.MUTE, onlinePlayer, config.get(Config.MUTE_LENGTH));
         }
     }
+    
+    public void removeKickHistory(OfflinePlayer player) {
+        beenKicked.remove(player);
+    }
+    
+    public void removeMuteHistory(OfflinePlayer player) {
+        beenMuted.remove(player);
+    }
 
     public void unMutePlayer(OfflinePlayer player) {
         mutedPlayers.remove(player);

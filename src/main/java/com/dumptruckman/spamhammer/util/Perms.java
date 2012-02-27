@@ -20,6 +20,14 @@ public class Perms {
     public static final Perm BYPASS = new Perm.Builder("bypass.*").child(BYPASS_PUNISH.getName(), true)
             .child(BYPASS_REPEAT.getName(), true).desc("Allows user to bypass ban punishments").build();
     
+    public static final Perm CMD_UNMUTE = new Perm.Builder("cmd.unmute").desc("Allows use of unmute command.").build();
+    public static final Perm CMD_RESET = new Perm.Builder("cmd.reset").desc("Allows use of reset command.").build();
+    public static final Perm CMD = new Perm.Builder("cmd.*").child(CMD_UNMUTE.getName(), true)
+            .child(CMD_RESET.getName(), true).desc("Allows user to use all SpamHammer commands.").build();
+
+    public static final Perm ALL = new Perm.Builder("*").child(CMD.getName(), true)
+            .child(BYPASS.getName(), true).desc("Gives user access to all SpamHammer permissions").build();
+    
     private Perms() {
         throw new AssertionError();
     }

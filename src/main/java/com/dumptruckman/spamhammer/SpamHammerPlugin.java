@@ -1,11 +1,9 @@
 package com.dumptruckman.spamhammer;
 
-import com.dumptruckman.spamhammer.api.BanData;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.util.Language;
-import com.dumptruckman.spamhammer.util.YamlBanData;
 import com.dumptruckman.spamhammer.util.YamlConfig;
 import com.dumptruckman.tools.plugin.AbstractPluginBase;
 import com.dumptruckman.tools.util.Logging;
@@ -14,8 +12,6 @@ import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.plugin.SpoutPlugin;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author dumptruckman
@@ -25,15 +21,13 @@ public class SpamHammerPlugin extends AbstractPluginBase<Config> implements Spam
     private SpoutPlugin spoutPlugin = null;
     
     private SpamHandler spamHandler = null;
-
-    private BanData data;
-
     final public void onDisable() {
         super.onDisable();
     }
 
     public void preEnable() {
         Language.init();
+        Config.Initializer.init();
     }
 
     public void postEnable() {
@@ -61,25 +55,6 @@ public class SpamHammerPlugin extends AbstractPluginBase<Config> implements Spam
         }, 0, 1000);
 
     }*/
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BanData getData() {
-        if (this.data == null) {
-            // Loads the data
-            try {
-                this.data = new YamlBanData(this);
-            } catch (IOException e) {  // Catch errors loading the language file and exit out if found.
-                Logging.severe("Error loading data file!");
-                Logging.severe(e.getMessage());
-                Bukkit.getPluginManager().disablePlugin(this);
-                return null;
-            }
-        }
-        return this.data;
-    }
 
     @Override
     public String getCommandPrefix() {

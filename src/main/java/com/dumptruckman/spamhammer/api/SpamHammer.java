@@ -5,8 +5,6 @@ import com.dumptruckman.tools.plugin.PluginBase;
 import org.getspout.spoutapi.plugin.SpoutPlugin;
 
 public interface SpamHammer<C extends BaseConfig> extends PluginBase<C> {
-    
-    BanData getData();
 
     boolean isUsingSpout();
     

@@ -16,15 +16,15 @@ public class Language {
 
     public static final Message RATE_LIMIT_MESSAGE = new Message("abovelimit.message", "You are typing too fast!");
     public static final Message UNMUTE_COMMAND_MESSAGE_SUCCESS = new Message("command.unmute.success",
-            "Player has been unmuted.");
+            "%1 has been unmuted.");
     public static final Message UNMUTE_COMMAND_MESSAGE_FAILURE = new Message("command.unmute.failure",
-            "Player is not muted.");
+            "%1 is not muted.");
     public static final Message UNBAN_COMMAND_MESSAGE_SUCCESS = new Message("command.unban.success",
-            "Player has been unbanned");
+            "%1 has been unbanned");
     public static final Message UNBAN_COMMAND_MESSAGE_FAILURE = new Message("command.unban.failure",
-            "Player is not banned by SpamHammer.");
+            "%1 is not banned by SpamHammer.");
     public static final Message RESET_COMMAND_MESSAGE_SUCCESS = new Message("command.reset.success",
-            "Player's punishment level reset.");
+            "%1's punishment level reset.");
     
     public static final Message VALID_GREATER_ZERO = new Message("validation.greater_than_zero",
             "Must be a number greater than zero!");

@@ -9,4 +9,10 @@ public interface SpamHandler {
     void handleCommand(OfflinePlayer player, String command);
     
     boolean isMuted(OfflinePlayer player);
+
+    void unMutePlayer(OfflinePlayer player);
+
+    void removeKickHistory(OfflinePlayer player);
+
+    void removeMuteHistory(OfflinePlayer player);
 }

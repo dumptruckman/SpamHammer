@@ -1,47 +1,22 @@
 name: SpamHammer
-main: com.dumptruckman.spamhammer.SpamHammer
+main: com.dumptruckman.spamhammer.SpamHammerPlugin
 version: maven-version-number
 author: dumptruckman
 softdepend: [SpoutPlugin]
 
 commands:
-  spamunban:
-    description: Unbans a player banned by SpamHammer.
+  spam:
+    description: Base command for SpamHammer.
     usage: |
-           /<command> <playername>
-           /<command> dumptruckman - unbans dumptruckman if he was banned by SpamHammer.
-    aliases: dc
+           /<command>
   spamunmute:
     description: Unmutes a player banned by SpamHammer.
     usage: |
            /<command> <playername>
            /<command> dumptruckman - unmutes dumptruckman if he was muted by SpamHammer.
-    aliases: dc
   spamreset:
     description: Resets a player's SpamHammer punishment level.
     usage: |
            /<command> <playername>
            /<command> dumptruckman - Makes it like dumptruckman never spammed in the first place.
-    aliases: dc
-    
-permissions:
-  spamhammer.*:
-    description: Give access to all dChest commands
-    children:
-      spamhammer.unban: true
-      spamhammer.unmute: true
-      spamhammer.reset: true
-      spamhammer.ignore: true
-  spamhammer.unban:
-    description: Allows use of /spamunban
-    default: op
-  spamhammer.unmute:
-    description: Allows use of /spamunmute
-    default: op
-  spamhammer.reset:
-    description: Allows use of /spamreset
-    default: op
-  spamhammer.ignore:
-    description: Allows user to be unaffected by spamhammer
-    default: op
   

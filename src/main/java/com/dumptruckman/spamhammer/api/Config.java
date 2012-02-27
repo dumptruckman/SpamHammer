@@ -3,6 +3,7 @@ package com.dumptruckman.spamhammer.api;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.tools.config.BaseConfig;
 import com.dumptruckman.tools.config.ConfigEntry;
+import com.dumptruckman.tools.config.Entries;
 import com.dumptruckman.tools.config.Null;
 import com.dumptruckman.tools.config.SimpleConfigEntry;
 import com.dumptruckman.tools.locale.Message;
@@ -15,8 +16,8 @@ public interface Config extends BaseConfig {
     static final ConfigEntry<Null> MESSAGE = new SimpleConfigEntry<Null>("settings.message", null,
             "# === [ Message Spam Settings ] ===");
     static final ConfigEntry<Null> MESSAGE_RATE = new SimpleConfigEntry<Null>("settings.message.rate", null,
-            "# The message rate settings determine how messages per time frame",
-            "# are allowed before they are considered spam.",
+            "# The message rate settings determine how many messages per time frame are allowed before they are "
+                    + "considered spam.",
             "# The default of limit: 3 and period: 1 means more than 3 messages per 1 second will be considered spam");
     static final ConfigEntry<Integer> MESSAGE_LIMIT = new SimpleConfigEntry<Integer>("settings.message.rate.limit", 3) {
         @Override
@@ -130,4 +131,10 @@ public interface Config extends BaseConfig {
             return Language.VALID_GREATER_ZERO;
         }
     };
+
+    static class Initializer {
+        public static void init() {
+            Entries.registerConfig(Config.class);
+        }
+    }
 }
