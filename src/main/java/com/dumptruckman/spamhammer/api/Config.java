@@ -54,7 +54,7 @@ public interface Config extends BaseConfig {
 
     // TODO define this
     public static final ConfigEntry<Boolean> PREVENT_MESSAGES = new SimpleConfigEntry<Boolean>(
-            "message.preventabovelimit", true);
+            "settings.message.rate.prevent", true, "# Prevents messages above the rate limit from displaying");
 
     static final ConfigEntry<Null> MESSAGE_REPEAT = new SimpleConfigEntry<Null>("settings.message.repeat", null,
             "# The repeat settings allow you to prevent users from repeating the same message in a row");
