@@ -3,11 +3,13 @@ package com.dumptruckman.spamhammer;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
+import com.dumptruckman.spamhammer.command.SpamReset;
+import com.dumptruckman.spamhammer.command.SpamUnmute;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.YamlConfig;
+import com.dumptruckman.tools.config.Entries;
 import com.dumptruckman.tools.plugin.AbstractPluginBase;
 import com.dumptruckman.tools.util.Logging;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.plugin.SpoutPlugin;
 
@@ -27,7 +29,8 @@ public class SpamHammerPlugin extends AbstractPluginBase<Config> implements Spam
 
     public void preEnable() {
         Language.init();
-        Config.Initializer.init();
+        Entries.registerConfig(Config.class);
+        Entries.registerConfig(YamlConfig.class);
     }
 
     public void postEnable() {
@@ -36,25 +39,14 @@ public class SpamHammerPlugin extends AbstractPluginBase<Config> implements Spam
             Logging.info("Hooked SpoutPlugin!");
             this.spoutPlugin = (SpoutPlugin) plugin;
         }
+
+        registerCommands();
     }
 
-    /*
-    final public void onEnable() {
-
-        // Register command executor for command
-        getCommand("spamunban").setExecutor(new SpamHammerPluginCommand(this));
-        getCommand("spamunmute").setExecutor(new SpamHammerPluginCommand(this));
-        getCommand("spamreset").setExecutor(new SpamHammerPluginCommand(this));
-
-        timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                SpamHammerPlugin.this.checkTimes();
-            }
-        }, 0, 1000);
-
-    }*/
+    private void registerCommands() {
+        getCommandHandler().registerCommand(new SpamReset(this));
+        getCommandHandler().registerCommand(new SpamUnmute(this));
+    }
 
     @Override
     public String getCommandPrefix() {

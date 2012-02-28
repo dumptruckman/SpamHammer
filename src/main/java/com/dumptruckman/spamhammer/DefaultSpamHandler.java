@@ -6,7 +6,6 @@ import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
 import com.dumptruckman.tools.locale.Messager;
-import com.dumptruckman.tools.permission.Perm;
 import com.dumptruckman.tools.util.MinecraftTools;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

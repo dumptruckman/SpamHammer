@@ -6,13 +6,11 @@ import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
 import com.dumptruckman.tools.locale.Messager;
-import com.dumptruckman.tools.permission.Perm;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**

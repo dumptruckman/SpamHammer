@@ -19,4 +19,12 @@ commands:
     usage: |
            /<command> <playername>
            /<command> dumptruckman - Makes it like dumptruckman never spammed in the first place.
+  spamreload:
+    description: Reloads the SpamHammer config.yml
+    usage: |
+           /<command>
+  spamdebug:
+    description: Sets debug mode.
+    usage: |
+           /<command> [OFF|1|2|3]
   
