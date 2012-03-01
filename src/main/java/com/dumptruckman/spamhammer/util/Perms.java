@@ -1,6 +1,6 @@
 package com.dumptruckman.spamhammer.util;
 
-import com.dumptruckman.tools.permission.Perm;
+import com.dumptruckman.minecraft.permission.Perm;
 
 public class Perms {
     

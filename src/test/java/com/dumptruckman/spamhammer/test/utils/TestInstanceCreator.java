@@ -7,9 +7,9 @@
 
 package com.dumptruckman.spamhammer.test.utils;
 
+import com.dumptruckman.minecraft.plugin.AbstractBukkitPlugin;
+import com.dumptruckman.minecraft.util.FileUtils;
 import com.dumptruckman.spamhammer.SpamHammerPlugin;
-import com.dumptruckman.tools.plugin.AbstractPluginBase;
-import com.dumptruckman.tools.util.FileUtils;
 import junit.framework.Assert;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,7 +44,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TestInstanceCreator {
-    private AbstractPluginBase plugin;
+    private AbstractBukkitPlugin plugin;
     private Server mockServer;
     private CommandSender commandSender;
 
@@ -258,7 +258,7 @@ public class TestInstanceCreator {
         return true;
     }
 
-    public AbstractPluginBase getPlugin() {
+    public AbstractBukkitPlugin getPlugin() {
         return this.plugin;
     }
 

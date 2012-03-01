@@ -1,6 +1,6 @@
 package com.dumptruckman.spamhammer.test.utils;
 
-import com.dumptruckman.tools.locale.Message;
+import com.dumptruckman.minecraft.locale.Message;
 
 public class MockMessages {
     public final static Message TEST_MESSAGE = new Message("test.message", "This is a &ctest message! (%1)",

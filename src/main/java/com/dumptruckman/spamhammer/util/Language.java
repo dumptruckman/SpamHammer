@@ -1,6 +1,6 @@
 package com.dumptruckman.spamhammer.util;
 
-import com.dumptruckman.tools.locale.Message;
+import com.dumptruckman.minecraft.locale.Message;
 
 public class Language {
 
@@ -19,10 +19,10 @@ public class Language {
             "%1 has been unmuted.");
     public static final Message UNMUTE_COMMAND_MESSAGE_FAILURE = new Message("command.unmute.failure",
             "%1 is not muted.");
-    public static final Message UNBAN_COMMAND_MESSAGE_SUCCESS = new Message("command.unban.success",
-            "%1 has been unbanned");
-    public static final Message UNBAN_COMMAND_MESSAGE_FAILURE = new Message("command.unban.failure",
-            "%1 is not banned by SpamHammer.");
+    //public static final Message UNBAN_COMMAND_MESSAGE_SUCCESS = new Message("command.unban.success",
+    //        "%1 has been unbanned");
+    //public static final Message UNBAN_COMMAND_MESSAGE_FAILURE = new Message("command.unban.failure",
+    //        "%1 is not banned by SpamHammer.");
     public static final Message RESET_COMMAND_MESSAGE_SUCCESS = new Message("command.reset.success",
             "%1's punishment level reset.");
     

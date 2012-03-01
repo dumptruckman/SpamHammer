@@ -1,12 +1,12 @@
 package com.dumptruckman.spamhammer.api;
 
+import com.dumptruckman.minecraft.config.BaseConfig;
+import com.dumptruckman.minecraft.config.ConfigEntry;
+import com.dumptruckman.minecraft.config.Entries;
+import com.dumptruckman.minecraft.config.Null;
+import com.dumptruckman.minecraft.config.SimpleConfigEntry;
+import com.dumptruckman.minecraft.locale.Message;
 import com.dumptruckman.spamhammer.util.Language;
-import com.dumptruckman.tools.config.BaseConfig;
-import com.dumptruckman.tools.config.ConfigEntry;
-import com.dumptruckman.tools.config.Entries;
-import com.dumptruckman.tools.config.Null;
-import com.dumptruckman.tools.config.SimpleConfigEntry;
-import com.dumptruckman.tools.locale.Message;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,10 +109,12 @@ public interface Config extends BaseConfig {
             "# Setting this to true will kick players as the second level of punishment.");
     ConfigEntry<Boolean> USE_BAN = new SimpleConfigEntry<Boolean>("settings.punishments.ban.use", true,
             "# Setting this to true will ban players as the final level of punishment.");
+    /*
     ConfigEntry<Integer> BAN_LENGTH = new SimpleConfigEntry<Integer>("settings.punishments.ban.length", 60,
             "# If ban punishment is used, this is how long the player will be banned for.",
             "# This time measured in minutes.",
             "# Setting this to 0 or less will make bans permanent until unbanned manually");
+    */
     ConfigEntry<Integer> COOL_OFF = new SimpleConfigEntry<Integer>("settings.cooloff.time", 300,
             "# This setting determines how long a player will be watched for additional spam before starting",
             "# them at the lowest punishment level.", "# This time measured in seconds.") {

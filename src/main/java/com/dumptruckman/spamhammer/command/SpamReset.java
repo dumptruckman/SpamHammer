@@ -1,9 +1,9 @@
 package com.dumptruckman.spamhammer.command;
 
+import com.dumptruckman.minecraft.plugin.command.PluginCommand;
 import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
-import com.dumptruckman.tools.plugin.command.PluginCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;

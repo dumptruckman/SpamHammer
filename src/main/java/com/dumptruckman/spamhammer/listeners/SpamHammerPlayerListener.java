@@ -1,11 +1,11 @@
 package com.dumptruckman.spamhammer.listeners;
 
+import com.dumptruckman.minecraft.locale.Messager;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
-import com.dumptruckman.tools.locale.Messager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;

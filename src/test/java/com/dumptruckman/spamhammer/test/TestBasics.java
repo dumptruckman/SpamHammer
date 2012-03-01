@@ -7,11 +7,10 @@
 
 package com.dumptruckman.spamhammer.test;
 
+import com.dumptruckman.minecraft.config.BaseConfig;
+import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.util.Language;
-import com.dumptruckman.tools.config.BaseConfig;
-import com.dumptruckman.tools.plugin.AbstractPluginBase;
-import com.dumptruckman.spamhammer.test.utils.MockMessages;
 import com.dumptruckman.spamhammer.test.utils.TestInstanceCreator;
 import junit.framework.Assert;
 import org.bukkit.Server;
@@ -34,7 +33,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ AbstractPluginBase.class })
+@PrepareForTest({ SpamHammerPlugin.class })
 public class TestBasics {
     TestInstanceCreator creator;
     Server mockServer;

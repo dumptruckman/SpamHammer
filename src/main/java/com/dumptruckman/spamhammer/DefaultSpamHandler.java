@@ -1,12 +1,12 @@
 package com.dumptruckman.spamhammer;
 
+import com.dumptruckman.minecraft.locale.Messager;
+import com.dumptruckman.minecraft.util.MinecraftTools;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
-import com.dumptruckman.tools.locale.Messager;
-import com.dumptruckman.tools.util.MinecraftTools;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -27,13 +27,13 @@ class DefaultSpamHandler implements SpamHandler {
     private Map<OfflinePlayer, Long> actionTime = new HashMap<OfflinePlayer, Long>();
 
     private List<OfflinePlayer> mutedPlayers = new ArrayList<OfflinePlayer>();
-    public List<OfflinePlayer> beenMuted = new ArrayList<OfflinePlayer>();
-    public List<OfflinePlayer> beenKicked = new ArrayList<OfflinePlayer>();
+    private List<OfflinePlayer> beenMuted = new ArrayList<OfflinePlayer>();
+    private List<OfflinePlayer> beenKicked = new ArrayList<OfflinePlayer>();
 
     public DefaultSpamHandler(SpamHammer<Config> plugin) {
         this.config = plugin.config();
         this.messager = plugin.getMessager();
-        plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
                 checkTimes();

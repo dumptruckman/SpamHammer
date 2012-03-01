@@ -1,5 +1,8 @@
 package com.dumptruckman.spamhammer;
 
+import com.dumptruckman.minecraft.config.Entries;
+import com.dumptruckman.minecraft.plugin.AbstractBukkitPlugin;
+import com.dumptruckman.minecraft.util.Logging;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
@@ -7,9 +10,6 @@ import com.dumptruckman.spamhammer.command.SpamReset;
 import com.dumptruckman.spamhammer.command.SpamUnmute;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.YamlConfig;
-import com.dumptruckman.tools.config.Entries;
-import com.dumptruckman.tools.plugin.AbstractPluginBase;
-import com.dumptruckman.tools.util.Logging;
 import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.plugin.SpoutPlugin;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
 /**
  * @author dumptruckman
  */
-public class SpamHammerPlugin extends AbstractPluginBase<Config> implements SpamHammer<Config> {
+public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements SpamHammer<Config> {
 
     private SpoutPlugin spoutPlugin = null;
     
