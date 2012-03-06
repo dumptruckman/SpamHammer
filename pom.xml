@@ -144,12 +144,12 @@ and adjust the build number accordingly -->
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>com.dumptruckman:PluginBase</include>
+                                    <include>com.dumptruckman.minecraft:BukkitPlugin</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
                                 <relocation>
-                                    <pattern>com.dumptruckman.tools</pattern>
+                                    <pattern>com.dumptruckman.minecraft.pluginbase</pattern>
                                     <shadedPattern>com.dumptruckman.spamhammer.pluginbase</shadedPattern>
                                 </relocation>
                             </relocations>
@@ -164,7 +164,7 @@ and adjust the build number accordingly -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.1-R6</version>
+            <version>1.2.3-R0.2-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
