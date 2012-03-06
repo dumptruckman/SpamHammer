@@ -16,7 +16,7 @@ import static com.dumptruckman.spamhammer.config.ConfigPath.*;
 /**
  * @author dumptruckman
  */
-public class SpamHammerPlayerListener extends PlayerListener {
+public class SpamHammerPlayerListener implements Listener {
 
     private SpamHammer plugin;
 
@@ -24,7 +24,7 @@ public class SpamHammerPlayerListener extends PlayerListener {
         this.plugin = plugin;
     }
 
-    @Override
+    @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
         if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
             return;
@@ -50,14 +50,14 @@ public class SpamHammerPlayerListener extends PlayerListener {
             event.getPlayer().sendMessage(plugin.config.getString(RATE_LIMIT_MESSAGE.toString()));
         }
     }
-
+    @EventHandler
     public void onPlayerLogin(PlayerLoginEvent event) {
         if (plugin.isBanned(event.getPlayer().getName())) {
             event.disallow(PlayerLoginEvent.Result.KICK_BANNED,
                     plugin.config.getString(BAN_MESSAGE.toString()));
         }
     }
-
+    @EventHandler
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
         if (event.getPlayer().isOp() || (plugin.usePerms && event.getPlayer().hasPermission("spamhammer.ignore")))
             return;
