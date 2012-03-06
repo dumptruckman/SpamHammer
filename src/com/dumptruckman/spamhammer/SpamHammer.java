@@ -62,9 +62,7 @@ public class SpamHammer extends JavaPlugin {
         final PluginManager pm = getServer().getPluginManager();
 
         // Register event
-        pm.registerEvent(Type.PLAYER_CHAT, playerListener, Event.Priority.High, this);
-        pm.registerEvent(Type.PLAYER_COMMAND_PREPROCESS, playerListener, Event.Priority.High, this);
-        pm.registerEvent(Type.PLAYER_LOGIN, playerListener, Event.Priority.Normal, this);
+        getServer().getPluginManager().registerEvents(new SpamHammerPlayerListener(), this);
 
         reload();
 
