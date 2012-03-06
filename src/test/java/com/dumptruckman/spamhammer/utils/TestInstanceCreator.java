@@ -5,10 +5,9 @@
  * with this project.                                                         *
  ******************************************************************************/
 
-package com.dumptruckman.spamhammer.test.utils;
+package com.dumptruckman.spamhammer.utils;
 
-import com.dumptruckman.minecraft.plugin.AbstractBukkitPlugin;
-import com.dumptruckman.minecraft.util.FileUtils;
+import com.dumptruckman.minecraft.pluginbase.util.FileUtils;
 import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import junit.framework.Assert;
 import org.bukkit.Bukkit;
@@ -17,6 +16,7 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -27,10 +27,13 @@ import org.mockito.Matchers;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.MockGateway;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,9 +47,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class TestInstanceCreator {
-    private AbstractBukkitPlugin plugin;
+    private SpamHammerPlugin plugin;
     private Server mockServer;
     private CommandSender commandSender;
+    private Map<String, Player> players = new HashMap<String, Player>();
 
     public static final File pluginDirectory = new File("bin/test/server/plugins/plugintest");
     public static final File serverDirectory = new File("bin/test/server");
@@ -57,6 +61,8 @@ public class TestInstanceCreator {
         try {
             pluginDirectory.mkdirs();
             Assert.assertTrue(pluginDirectory.exists());
+
+            MockGateway.MOCK_STANDARD_METHODS = false;
 
             plugin = PowerMockito.spy(new SpamHammerPlugin());
 
@@ -96,6 +102,7 @@ public class TestInstanceCreator {
             Logger.getLogger("Minecraft").setParent(Util.logger);
             when(mockServer.getLogger()).thenReturn(Util.logger);
             when(mockServer.getWorldContainer()).thenReturn(worldsDirectory);
+            when(mockServer.getOnlinePlayers()).thenReturn(players.values().toArray(new Player[players.values().size()]));
 
             // Give the server some worlds
             when(mockServer.getWorld(anyString())).thenAnswer(new Answer<World>() {
@@ -215,6 +222,44 @@ public class TestInstanceCreator {
             when(commandSender.addAttachment(plugin)).thenReturn(null);
             when(commandSender.isOp()).thenReturn(true);
 
+
+            final Logger playerLogger = Logger.getLogger("Player");
+            playerLogger.setParent(Util.logger);
+            Answer<Player> playerAnswer = new Answer<Player>() {
+                public Player answer(InvocationOnMock invocation) throws Throwable {
+                    String arg;
+                    try {
+                        arg = (String) invocation.getArguments()[0];
+                    } catch (Exception e) {
+                        return null;
+                    }
+                    Player player = players.get(arg);
+                    if (player == null) {
+                        player = mock(Player.class);
+                        players.put(arg, player);
+                    }
+                    doAnswer(new Answer<Void>() {
+                        public Void answer(InvocationOnMock invocation) throws Throwable {
+                            playerLogger.info(ChatColor.stripColor((String) invocation.getArguments()[0]));
+                            return null;
+                        }}).when(player).sendMessage(anyString());
+                    when(player.getName()).thenReturn(arg);
+                    when(player.isPermissionSet(anyString())).thenReturn(false);
+                    when(player.isPermissionSet(Matchers.isA(Permission.class))).thenReturn(false);
+                    when(player.hasPermission(anyString())).thenReturn(false);
+                    when(player.hasPermission(Matchers.isA(Permission.class))).thenReturn(false);
+                    when(player.addAttachment(plugin)).thenReturn(null);
+                    when(player.isOp()).thenReturn(false);
+                    when(player.getServer()).thenReturn(mockServer);
+                    return player;
+                }
+            };
+            when(mockServer.getPlayer(anyString())).thenAnswer(playerAnswer);
+            when(mockServer.getOfflinePlayer(anyString())).thenAnswer(playerAnswer);
+            // Init our command sender
+
+
+
             Bukkit.setServer(mockServer);
 
             // Load Multiverse Core
@@ -258,7 +303,7 @@ public class TestInstanceCreator {
         return true;
     }
 
-    public AbstractBukkitPlugin getPlugin() {
+    public SpamHammerPlugin getPlugin() {
         return this.plugin;
     }
 

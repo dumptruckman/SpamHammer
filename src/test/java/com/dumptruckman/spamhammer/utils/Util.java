@@ -5,7 +5,7 @@
  * with this project.                                                         *
  ******************************************************************************/
 
-package com.dumptruckman.spamhammer.test.utils;
+package com.dumptruckman.spamhammer.utils;
 
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
