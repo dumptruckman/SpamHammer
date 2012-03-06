@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.dumptruckman</groupId>
+    <groupId>com.dumptruckman.minecraft</groupId>
     <artifactId>SpamHammer</artifactId>
     <version>2.0-alpha</version>
     <name>SpamHammer</name>
@@ -223,10 +223,14 @@ and adjust the build number accordingly -->
         <!-- End of Test Dependencies -->
     </dependencies>
 
-    <!--<distributionManagement>
+    <distributionManagement>
         <repository>
             <id>OnARandomBox</id>
-            <url>http://repo.onarandombox.com/content/repositories/multiverse</url>
+            <url>http://repo.onarandombox.com/content/repositories/thirdparty/</url>
         </repository>
-    </distributionManagement>-->
+        <snapshotRepository>
+            <id>OnARandomBox</id>
+            <url>http://repo.onarandombox.com/content/repositories/thirdparty-dev/</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>
