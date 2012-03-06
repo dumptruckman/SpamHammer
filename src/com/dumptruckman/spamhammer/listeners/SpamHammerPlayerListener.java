@@ -16,7 +16,7 @@ import static com.dumptruckman.spamhammer.config.ConfigPath.*;
 /**
  * @author dumptruckman
  */
-public class SpamHammerPlayerListener extends PlayerListener {
+public class SpamHammerPlayerListener implements Listener {
 
     private SpamHammer plugin;
 
