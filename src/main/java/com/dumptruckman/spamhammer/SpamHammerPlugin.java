@@ -1,8 +1,8 @@
 package com.dumptruckman.spamhammer;
 
-import com.dumptruckman.minecraft.config.Entries;
-import com.dumptruckman.minecraft.plugin.AbstractBukkitPlugin;
-import com.dumptruckman.minecraft.util.Logging;
+import com.dumptruckman.minecraft.pluginbase.config.Entries;
+import com.dumptruckman.minecraft.pluginbase.plugin.AbstractBukkitPlugin;
+import com.dumptruckman.minecraft.pluginbase.util.Logging;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
@@ -14,13 +14,18 @@ import org.bukkit.plugin.Plugin;
 import org.getspout.spoutapi.plugin.SpoutPlugin;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author dumptruckman
  */
 public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements SpamHammer<Config> {
 
+    private List<String> prefixes = Arrays.asList("spam");
     private SpoutPlugin spoutPlugin = null;
+
+    private PluginListener listener;
     
     private SpamHandler spamHandler = null;
     final public void onDisable() {
@@ -39,7 +44,8 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
             Logging.info("Hooked SpoutPlugin!");
             this.spoutPlugin = (SpoutPlugin) plugin;
         }
-
+        listener = new PluginListener(this);
+        getServer().getPluginManager().registerEvents(listener, this);
         registerCommands();
     }
 
@@ -49,8 +55,8 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
     }
 
     @Override
-    public String getCommandPrefix() {
-        return "spam";
+    public List<String> getCommandPrefixes() {
+        return prefixes;
     }
 
     @Override

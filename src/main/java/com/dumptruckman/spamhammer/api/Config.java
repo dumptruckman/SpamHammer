@@ -1,11 +1,11 @@
 package com.dumptruckman.spamhammer.api;
 
-import com.dumptruckman.minecraft.config.BaseConfig;
-import com.dumptruckman.minecraft.config.ConfigEntry;
-import com.dumptruckman.minecraft.config.Entries;
-import com.dumptruckman.minecraft.config.Null;
-import com.dumptruckman.minecraft.config.SimpleConfigEntry;
-import com.dumptruckman.minecraft.locale.Message;
+import com.dumptruckman.minecraft.pluginbase.config.BaseConfig;
+import com.dumptruckman.minecraft.pluginbase.config.ConfigEntry;
+import com.dumptruckman.minecraft.pluginbase.config.Entries;
+import com.dumptruckman.minecraft.pluginbase.config.Null;
+import com.dumptruckman.minecraft.pluginbase.config.SimpleConfigEntry;
+import com.dumptruckman.minecraft.pluginbase.locale.Message;
 import com.dumptruckman.spamhammer.util.Language;
 
 import java.util.Arrays;

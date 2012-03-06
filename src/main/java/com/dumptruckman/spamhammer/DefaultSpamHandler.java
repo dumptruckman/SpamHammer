@@ -1,7 +1,7 @@
 package com.dumptruckman.spamhammer;
 
-import com.dumptruckman.minecraft.locale.Messager;
-import com.dumptruckman.minecraft.util.MinecraftTools;
+import com.dumptruckman.minecraft.pluginbase.locale.Messager;
+import com.dumptruckman.minecraft.pluginbase.util.MinecraftTools;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
@@ -33,7 +33,7 @@ class DefaultSpamHandler implements SpamHandler {
     public DefaultSpamHandler(SpamHammer<Config> plugin) {
         this.config = plugin.config();
         this.messager = plugin.getMessager();
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
             @Override
             public void run() {
                 checkTimes();
@@ -54,11 +54,11 @@ class DefaultSpamHandler implements SpamHandler {
             times.remove();
         }
         long timediff = times.getLast() - times.getFirst();
-        if (timediff > config.get(Config.TIME_PERIOD)) {
+        if (timediff > (config.get(Config.TIME_PERIOD) * 1000)) {
             times.clear();
             times.add(curtime);
         }
-        if (times.size() == config.get(Config.MESSAGE_LIMIT)) {
+        if (times.size() >= config.get(Config.MESSAGE_LIMIT)) {
             isSpamming = true;
         }
         playerChatTimes.put(player, times);
@@ -136,6 +136,8 @@ class DefaultSpamHandler implements SpamHandler {
         mutedPlayers.add(player);
         beenMuted.add(player);
         actionTime.put(player, System.nanoTime() / 1000000);
+        playerChatTimes.get(player).clear();
+        playerChatHistory.get(player).clear();
 
         Player onlinePlayer = player.getPlayer();
         if (onlinePlayer != null) {
@@ -160,6 +162,7 @@ class DefaultSpamHandler implements SpamHandler {
     }
 
     public void kickPlayer(OfflinePlayer player) {
+        playerChatHistory.get(player).clear();
         beenKicked.add(player);
         actionTime.put(player, System.currentTimeMillis() / 1000);
         Player onlinePlayer = player.getPlayer();
@@ -171,6 +174,7 @@ class DefaultSpamHandler implements SpamHandler {
     }
 
     public void banPlayer(OfflinePlayer player) {
+        playerChatHistory.get(player).clear();
         Player onlinePlayer = player.getPlayer();
         if (onlinePlayer != null) {
             if (!Perms.BYPASS_BAN.hasPermission(onlinePlayer)) {
@@ -184,23 +188,26 @@ class DefaultSpamHandler implements SpamHandler {
         player.setBanned(false);
     }
 
-    public synchronized void checkTimes() {
-        Long time = System.currentTimeMillis() / 1000;
+    public void checkTimes() {
+        long time = System.nanoTime() / 1000000;
         for (OfflinePlayer player : actionTime.keySet()) {
+            long action = actionTime.get(player);
             if (isMuted(player)) {
-                if (time > (actionTime.get(player) + config.get(Config.MUTE_LENGTH))) {
+                long muteLength = config.get(Config.MUTE_LENGTH) * 1000;
+                if (time > (action + muteLength)) {
                     unMutePlayer(player);
                 }
             }
-            if ((time > (actionTime.get(player) + config.get(Config.COOL_OFF)))
+            long coolOff = config.get(Config.COOL_OFF) * 1000;
+            if ((time > (action + coolOff))
                     && (config.get(Config.COOL_OFF) != 0)) {
-                if (beenKicked(player)) beenKicked.remove(player);
+                if (beenKicked(player)) removeKickHistory(player);
                 if (beenMuted(player)) {
                     Player onlinePlayer = Bukkit.getPlayer(player.getName());
                     if (onlinePlayer != null) {
                         messager.good(Language.COOL_OFF_MESSAGE, onlinePlayer);
                     }
-                    beenMuted.remove(player);
+                    removeMuteHistory(player);
                 }
             }
         }

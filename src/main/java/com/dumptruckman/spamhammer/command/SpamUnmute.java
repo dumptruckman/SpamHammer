@@ -1,6 +1,6 @@
 package com.dumptruckman.spamhammer.command;
 
-import com.dumptruckman.minecraft.plugin.command.PluginCommand;
+import com.dumptruckman.minecraft.pluginbase.plugin.command.PluginCommand;
 import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
@@ -16,11 +16,13 @@ public class SpamUnmute extends PluginCommand<SpamHammerPlugin> {
     public SpamUnmute(SpamHammerPlugin plugin) {
         super(plugin);
         this.setName("Unmute someone muted by SpamHammer");
-        this.setCommandUsage("/" + plugin.getCommandPrefix() + " unmute" + ChatColor.GOLD + " <player>");
+        this.setCommandUsage("/" + plugin.getCommandPrefixes().get(0) + " unmute" + ChatColor.GOLD + " <player>");
         this.setArgRange(1, 1);
-        this.addKey(plugin.getCommandPrefix() + " unmute");
-        this.addKey(plugin.getCommandPrefix() + "unmute");
-        this.addCommandExample("/" + plugin.getCommandPrefix() + " unmute " + ChatColor.GOLD + "dumptruckman");
+        for (String prefix : plugin.getCommandPrefixes()) {
+            this.addKey(prefix + " unmute");
+            this.addKey(prefix + "unmute");
+        }
+        this.addCommandExample("/" + plugin.getCommandPrefixes().get(0) + " unmute " + ChatColor.GOLD + "dumptruckman");
         this.setPermission(Perms.CMD_UNMUTE.getPermission());
     }
 

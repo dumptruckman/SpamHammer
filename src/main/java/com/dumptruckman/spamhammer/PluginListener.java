@@ -1,6 +1,6 @@
-package com.dumptruckman.spamhammer.listeners;
+package com.dumptruckman.spamhammer;
 
-import com.dumptruckman.minecraft.locale.Messager;
+import com.dumptruckman.minecraft.pluginbase.locale.Messager;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.SpamHammer;
 import com.dumptruckman.spamhammer.api.SpamHandler;
@@ -16,14 +16,14 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 /**
  * @author dumptruckman
  */
-public class SpamHammerPlayerListener implements Listener {
+public class PluginListener implements Listener {
 
     private SpamHammer plugin;
     private SpamHandler handler;
     private Config config;
     private Messager messager;
 
-    public SpamHammerPlayerListener(SpamHammer<Config> plugin) {
+    public PluginListener(SpamHammer<Config> plugin) {
         this.plugin = plugin;
         this.handler = plugin.getSpamHandler();
         this.config = plugin.config();
@@ -32,14 +32,15 @@ public class SpamHammerPlayerListener implements Listener {
 
     @EventHandler()
     public void onPlayerChat(PlayerChatEvent event) {
+        // TODO change this to detect long messages and see if they're different. could then assume chat mod in use.
         if (plugin.isUsingSpout()) {
-        	if (event.getPlayer() instanceof SpoutPlayer) {
+            if (event.getPlayer() instanceof SpoutPlayer) {
                 SpoutPlayer plyr = (SpoutPlayer)event.getPlayer();
-        		if (plyr.isSpoutCraftEnabled()) {
-                    // This plugin may incorrectly punish bukkitcontrib players. Therefore it doesn't work on them.
-        			return;
-        		}
-        	}
+                if (plyr.isSpoutCraftEnabled()) {
+                    // This plugin may incorrectly punish SpoutCraft players. Therefore it doesn't work on them.
+                    return;
+                }
+            }
         }
         if (handler.isMuted(event.getPlayer()) && !Perms.BYPASS_MUTE.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
@@ -49,7 +50,7 @@ public class SpamHammerPlayerListener implements Listener {
         if (handler.handleChat(event.getPlayer(), event.getMessage())
                 && config.get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            messager.bad(Language.RATE_LIMIT_MESSAGE, event.getPlayer());
+            messager.bad(Language.SPAMMING_MESSAGE, event.getPlayer());
         }
     }
 
@@ -71,7 +72,7 @@ public class SpamHammerPlayerListener implements Listener {
         if (handler.handleChat(event.getPlayer(), event.getMessage())
                 && config.get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            messager.bad(Language.RATE_LIMIT_MESSAGE, event.getPlayer());
+            messager.bad(Language.SPAMMING_MESSAGE, event.getPlayer());
         }
     }
 }

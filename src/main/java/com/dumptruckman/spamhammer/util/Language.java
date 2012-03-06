@@ -1,6 +1,6 @@
 package com.dumptruckman.spamhammer.util;
 
-import com.dumptruckman.minecraft.locale.Message;
+import com.dumptruckman.minecraft.pluginbase.locale.Message;
 
 public class Language {
 
@@ -14,7 +14,7 @@ public class Language {
     public static final Message COOL_OFF_MESSAGE = new Message("cooloff.message",
             "Spamming punishment reset.  Be nice!");
 
-    public static final Message RATE_LIMIT_MESSAGE = new Message("abovelimit.message", "You are typing too fast!");
+    public static final Message SPAMMING_MESSAGE = new Message("spamming.message", "You are spamming! Chill out!");
     public static final Message UNMUTE_COMMAND_MESSAGE_SUCCESS = new Message("command.unmute.success",
             "%1 has been unmuted.");
     public static final Message UNMUTE_COMMAND_MESSAGE_FAILURE = new Message("command.unmute.failure",

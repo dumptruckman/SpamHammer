@@ -1,6 +1,6 @@
 package com.dumptruckman.spamhammer.command;
 
-import com.dumptruckman.minecraft.plugin.command.PluginCommand;
+import com.dumptruckman.minecraft.pluginbase.plugin.command.PluginCommand;
 import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
@@ -16,11 +16,13 @@ public class SpamReset extends PluginCommand<SpamHammerPlugin> {
     public SpamReset(SpamHammerPlugin plugin) {
         super(plugin);
         this.setName("Resets a player's history with SpamHammer");
-        this.setCommandUsage("/" + plugin.getCommandPrefix() + " reset" + ChatColor.GOLD + " <player>");
+        this.setCommandUsage("/" + plugin.getCommandPrefixes().get(0) + " reset" + ChatColor.GOLD + " <player>");
         this.setArgRange(1, 1);
-        this.addKey(plugin.getCommandPrefix() + " reset");
-        this.addKey(plugin.getCommandPrefix() + "reset");
-        this.addCommandExample("/" + plugin.getCommandPrefix() + " reset " + ChatColor.GOLD + "dumptruckman");
+        for (String prefix : plugin.getCommandPrefixes()) {
+            this.addKey(prefix + " reset");
+            this.addKey(prefix + "reset");
+        }
+        this.addCommandExample("/" + plugin.getCommandPrefixes().get(0) + " reset " + ChatColor.GOLD + "dumptruckman");
         this.setPermission(Perms.CMD_UNMUTE.getPermission());
     }
 
