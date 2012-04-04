@@ -162,7 +162,9 @@ class DefaultSpamHandler implements SpamHandler {
     }
 
     public void kickPlayer(OfflinePlayer player) {
-        playerChatHistory.get(player).clear();
+        if (playerChatHistory.get(player) != null) {
+            playerChatHistory.get(player).clear();
+        }
         beenKicked.add(player);
         actionTime.put(player, System.currentTimeMillis() / 1000);
         Player onlinePlayer = player.getPlayer();
@@ -174,7 +176,9 @@ class DefaultSpamHandler implements SpamHandler {
     }
 
     public void banPlayer(OfflinePlayer player) {
-        playerChatHistory.get(player).clear();
+        if (playerChatHistory.get(player) != null) {
+            playerChatHistory.get(player).clear();
+        }
         Player onlinePlayer = player.getPlayer();
         if (onlinePlayer != null) {
             if (!Perms.BYPASS_BAN.hasPermission(onlinePlayer)) {
