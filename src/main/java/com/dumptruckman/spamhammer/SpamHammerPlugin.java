@@ -1,6 +1,5 @@
 package com.dumptruckman.spamhammer;
 
-import com.dumptruckman.minecraft.pluginbase.config.Entries;
 import com.dumptruckman.minecraft.pluginbase.plugin.AbstractBukkitPlugin;
 import com.dumptruckman.minecraft.pluginbase.util.Logging;
 import com.dumptruckman.spamhammer.api.Config;
@@ -34,8 +33,6 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
 
     public void preEnable() {
         Language.init();
-        Entries.registerConfig(Config.class);
-        Entries.registerConfig(YamlConfig.class);
     }
 
     public void postEnable() {
