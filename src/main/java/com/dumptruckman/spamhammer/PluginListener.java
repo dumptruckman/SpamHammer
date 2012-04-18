@@ -68,7 +68,7 @@ public class PluginListener implements Listener {
             messager.bad(Language.MUTED, event.getPlayer());
             return;
         }
-        if (!config.get(Config.INCLUDE_COMMANDS).contains(event.getMessage().split("\\s")[0])) return;
+        if (!config.getList(Config.INCLUDE_COMMANDS).contains(event.getMessage().split("\\s")[0])) return;
         if (handler.handleChat(event.getPlayer(), event.getMessage())
                 && config.get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
