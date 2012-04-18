@@ -23,7 +23,7 @@ public class SpamReset extends PluginCommand<SpamHammerPlugin> {
             this.addKey(prefix + "reset");
         }
         this.addCommandExample("/" + plugin.getCommandPrefixes().get(0) + " reset " + ChatColor.GOLD + "dumptruckman");
-        this.setPermission(Perms.CMD_UNMUTE.getPermission());
+        this.setPermission(Perms.CMD_RESET.getPermission());
     }
 
     @Override
