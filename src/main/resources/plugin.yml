@@ -3,6 +3,7 @@ main: com.dumptruckman.spamhammer.SpamHammerPlugin
 version: maven-version-number
 author: dumptruckman
 softdepend: [SpoutPlugin]
+dev-url: http://dev.bukkit.org/server-mods/spamhammer
 
 commands:
   spam:
