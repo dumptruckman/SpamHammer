@@ -19,6 +19,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 import org.junit.After;
 import org.junit.Before;
@@ -102,10 +103,10 @@ public class TestBasics {
         
         Player player = mockServer.getPlayer("dumptruckman");
 
+        listener.onPlayerCommandPreprocess(new PlayerCommandPreprocessEvent(player, "/g hello"));
         listener.onPlayerChat(new PlayerChatEvent(player, "hello"));
         listener.onPlayerChat(new PlayerChatEvent(player, "hello"));
-        listener.onPlayerChat(new PlayerChatEvent(player, "hello"));
-        listener.onPlayerChat(new PlayerChatEvent(player, "hello"));
+        listener.onPlayerCommandPreprocess(new PlayerCommandPreprocessEvent(player, "/g hello"));
 
         cmdArgs = new String[] { "unmute", "dumptruckman" };
         myPlugin.onCommand(mockCommandSender, mockCommand, "", cmdArgs);
