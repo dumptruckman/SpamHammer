@@ -13,21 +13,24 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-/**
- * @author dumptruckman
- */
 public class PluginListener implements Listener {
 
     private SpamHammer plugin;
-    private SpamHandler handler;
-    private Config config;
-    private Messager messager;
 
-    public PluginListener(SpamHammer<Config> plugin) {
+    public PluginListener(SpamHammer plugin) {
         this.plugin = plugin;
-        this.handler = plugin.getSpamHandler();
-        this.config = plugin.config();
-        this.messager = plugin.getMessager();
+    }
+
+    private Config getConfig() {
+        return plugin.config();
+    }
+
+    private SpamHandler getHandler() {
+        return plugin.getSpamHandler();
+    }
+
+    private Messager getMessager() {
+        return plugin.getMessager();
     }
 
     @EventHandler()
@@ -42,15 +45,15 @@ public class PluginListener implements Listener {
                 }
             }
         }
-        if (handler.isMuted(event.getPlayer()) && !Perms.BYPASS_MUTE.hasPermission(event.getPlayer())) {
+        if (getHandler().isMuted(event.getPlayer()) && !Perms.BYPASS_MUTE.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            messager.bad(Language.MUTED, event.getPlayer());
+            getMessager().bad(Language.MUTED, event.getPlayer());
             return;
         }
-        if (handler.handleChat(event.getPlayer(), event.getMessage())
-                && config.get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
+        if (getHandler().handleChat(event.getPlayer(), event.getMessage())
+                && getConfig().get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            messager.bad(Language.SPAMMING_MESSAGE, event.getPlayer());
+            getMessager().bad(Language.SPAMMING_MESSAGE, event.getPlayer());
         }
     }
 
@@ -63,16 +66,16 @@ public class PluginListener implements Listener {
 
     @EventHandler
     public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        if (handler.isMuted(event.getPlayer()) && !Perms.BYPASS_MUTE.hasPermission(event.getPlayer())) {
+        if (getHandler().isMuted(event.getPlayer()) && !Perms.BYPASS_MUTE.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            messager.bad(Language.MUTED, event.getPlayer());
+            getMessager().bad(Language.MUTED, event.getPlayer());
             return;
         }
-        if (!config.getList(Config.INCLUDE_COMMANDS).contains(event.getMessage().split("\\s")[0])) return;
-        if (handler.handleChat(event.getPlayer(), event.getMessage())
-                && config.get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
+        if (!getConfig().get(Config.INCLUDE_COMMANDS).contains(event.getMessage().split("\\s")[0])) return;
+        if (getHandler().handleChat(event.getPlayer(), event.getMessage())
+                && getConfig().get(Config.PREVENT_MESSAGES) && !Perms.BYPASS_REPEAT.hasPermission(event.getPlayer())) {
             event.setCancelled(true);
-            messager.bad(Language.SPAMMING_MESSAGE, event.getPlayer());
+            getMessager().bad(Language.SPAMMING_MESSAGE, event.getPlayer());
         }
     }
 }

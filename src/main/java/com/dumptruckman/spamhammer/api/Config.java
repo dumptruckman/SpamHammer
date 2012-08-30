@@ -1,22 +1,21 @@
 package com.dumptruckman.spamhammer.api;
 
 import com.dumptruckman.minecraft.pluginbase.config.BaseConfig;
-import com.dumptruckman.minecraft.pluginbase.config.ConfigEntry;
 import com.dumptruckman.minecraft.pluginbase.config.EntryBuilder;
 import com.dumptruckman.minecraft.pluginbase.config.EntryValidator;
 import com.dumptruckman.minecraft.pluginbase.config.ListConfigEntry;
+import com.dumptruckman.minecraft.pluginbase.config.SimpleConfigEntry;
 import com.dumptruckman.minecraft.pluginbase.locale.Message;
 import com.dumptruckman.minecraft.pluginbase.util.Null;
 import com.dumptruckman.spamhammer.util.Language;
 
 import java.util.Arrays;
-import java.util.List;
 
 public interface Config extends BaseConfig {
 
-    ConfigEntry<Null> MESSAGE = new EntryBuilder<Null>(Null.class, "settings.message")
+    SimpleConfigEntry<Null> MESSAGE = new EntryBuilder<Null>(Null.class, "settings.message")
             .comment("# === [ Message Spam Settings ] ===").build();
-    ConfigEntry<Null> MESSAGE_RATE = new EntryBuilder<Null>(Null.class, "settings.message.rate")
+    SimpleConfigEntry<Null> MESSAGE_RATE = new EntryBuilder<Null>(Null.class, "settings.message.rate")
             .comment("# The message rate settings determine how many messages per time frame are allowed before they are "
                     + "considered spam.")
             .comment("# The default of limit: 3 and period: 1 means more than 3 messages per 1 second will be considered spam").build();
@@ -38,20 +37,20 @@ public interface Config extends BaseConfig {
         }
     }
 
-    ConfigEntry<Integer> MESSAGE_LIMIT = new EntryBuilder<Integer>(Integer.class, "settings.message.rate.limit").def(3)
+    SimpleConfigEntry<Integer> MESSAGE_LIMIT = new EntryBuilder<Integer>(Integer.class, "settings.message.rate.limit").def(3)
             .validator(new ZeroGreaterValidator()).build();
-    ConfigEntry<Integer> TIME_PERIOD = new EntryBuilder<Integer>(Integer.class, "settings.message.rate.period").def(1)
+    SimpleConfigEntry<Integer> TIME_PERIOD = new EntryBuilder<Integer>(Integer.class, "settings.message.rate.period").def(1)
             .validator(new ZeroGreaterValidator()).build();
 
     // TODO define this
-    ConfigEntry<Boolean> PREVENT_MESSAGES = new EntryBuilder<Boolean>(Boolean.class, "settings.message.rate.prevent")
+    SimpleConfigEntry<Boolean> PREVENT_MESSAGES = new EntryBuilder<Boolean>(Boolean.class, "settings.message.rate.prevent")
             .def(true).comment("# Prevents messages above the rate limit from displaying").build();
 
-    ConfigEntry<Null> MESSAGE_REPEAT = new EntryBuilder<Null>(Null.class, "settings.message.repeat")
+    SimpleConfigEntry<Null> MESSAGE_REPEAT = new EntryBuilder<Null>(Null.class, "settings.message.repeat")
             .comment("# The repeat settings allow you to prevent users from repeating the same message in a row").build();
-    ConfigEntry<Boolean> BLOCK_REPEATS = new EntryBuilder<Boolean>(Boolean.class, "settings.message.repeat.block")
+    SimpleConfigEntry<Boolean> BLOCK_REPEATS = new EntryBuilder<Boolean>(Boolean.class, "settings.message.repeat.block")
             .def(true).comment("# If set to true, this will block repeat messages.").build();
-    ConfigEntry<Integer> REPEAT_LIMIT = new EntryBuilder<Integer>(Integer.class, "settings.message.repeat.limit").def(2)
+    SimpleConfigEntry<Integer> REPEAT_LIMIT = new EntryBuilder<Integer>(Integer.class, "settings.message.repeat.limit").def(2)
             .comment("# If S pamHammer is set to block repeat messages, this is how many messages before they are "
                     + "considered repeats.").validator(new ZeroGreaterValidator()).build();
 
@@ -59,17 +58,17 @@ public interface Config extends BaseConfig {
             .defList(Arrays.asList("/g", "/general", "/yell"))
             .comment("# The commands listed here will be included in spam checking.").buildList();
 
-    ConfigEntry<Null> PUNISHMENTS = new EntryBuilder<Null>(Null.class, "settings.punishments")
+    SimpleConfigEntry<Null> PUNISHMENTS = new EntryBuilder<Null>(Null.class, "settings.punishments")
             .comment("# === [ Punishment Settings ] ===").build();
-    ConfigEntry<Boolean> USE_MUTE = new EntryBuilder<Boolean>(Boolean.class, "settings.punishments.mute.use").def(true)
+    SimpleConfigEntry<Boolean> USE_MUTE = new EntryBuilder<Boolean>(Boolean.class, "settings.punishments.mute.use").def(true)
             .comment("# Setting this to true will mute players as the first level of punishment.").build();
-    ConfigEntry<Integer> MUTE_LENGTH = new EntryBuilder<Integer>(Integer.class, "settings.punishments.mute.length").def(30)
+    SimpleConfigEntry<Integer> MUTE_LENGTH = new EntryBuilder<Integer>(Integer.class, "settings.punishments.mute.length").def(30)
             .comment("# If mute punishment is used, this is how long the player will be muted for.")
             .comment("# This time measured in seconds.").validator(new ZeroGreaterValidator()).build();
 
-    ConfigEntry<Boolean> USE_KICK = new EntryBuilder<Boolean>(Boolean.class, "settings.punishments.kick.use").def(true)
+    SimpleConfigEntry<Boolean> USE_KICK = new EntryBuilder<Boolean>(Boolean.class, "settings.punishments.kick.use").def(true)
             .comment("# Setting this to true will kick players as the second level of punishment.").build();
-    ConfigEntry<Boolean> USE_BAN = new EntryBuilder<Boolean>(Boolean.class, "settings.punishments.ban.use").def(true)
+    SimpleConfigEntry<Boolean> USE_BAN = new EntryBuilder<Boolean>(Boolean.class, "settings.punishments.ban.use").def(true)
             .comment("# Setting this to true will ban players as the final level of punishment.").build();
     /*
     ConfigEntry<Integer> BAN_LENGTH = new SimpleConfigEntry<Integer>("settings.punishments.ban.length", 60,
@@ -77,7 +76,7 @@ public interface Config extends BaseConfig {
             "# This time measured in minutes.",
             "# Setting this to 0 or less will make bans permanent until unbanned manually");
     */
-    ConfigEntry<Integer> COOL_OFF = new EntryBuilder<Integer>(Integer.class, "settings.cooloff.time").def(300)
+    SimpleConfigEntry<Integer> COOL_OFF = new EntryBuilder<Integer>(Integer.class, "settings.cooloff.time").def(300)
             .comment("# This setting determines how long a player will be watched for additional spam before starting")
             .comment("# them at the lowest punishment level.").comment("# This time measured in seconds.")
             .validator(new ZeroGreaterValidator()).build();

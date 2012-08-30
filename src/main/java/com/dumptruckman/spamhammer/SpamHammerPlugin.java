@@ -19,17 +19,14 @@ import java.util.List;
 /**
  * @author dumptruckman
  */
-public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements SpamHammer<Config> {
+public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements SpamHammer {
 
-    private List<String> prefixes = Arrays.asList("spam");
+    private final List<String> prefixes = Arrays.asList("spam");
     private SpoutPlugin spoutPlugin = null;
 
     private PluginListener listener;
     
     private SpamHandler spamHandler = null;
-    final public void onDisable() {
-        super.onDisable();
-    }
 
     public void preEnable() {
         Language.init();
