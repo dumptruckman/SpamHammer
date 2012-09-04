@@ -28,6 +28,11 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
     
     private LegacySpamHandler spamHandler = null;
 
+    @Override
+    public void preDisable() {
+
+    }
+
     public void preEnable() {
         Language.init();
     }
