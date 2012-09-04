@@ -8,8 +8,6 @@
 package com.dumptruckman.spamhammer;
 
 import com.dumptruckman.minecraft.pluginbase.config.BaseConfig;
-import com.dumptruckman.spamhammer.PluginListener;
-import com.dumptruckman.spamhammer.SpamHammerPlugin;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.utils.TestInstanceCreator;
 import junit.framework.Assert;
@@ -121,7 +119,7 @@ public class TestBasics {
 
         sleep(3000);
         try {
-            Field field = DefaultSpamHandler.class.getDeclaredField("config");
+            Field field = DefaultLegacySpamHandler.class.getDeclaredField("config");
             field.setAccessible(true);
             field.set(myPlugin.getSpamHandler(), myPlugin.config());
         } catch (NoSuchFieldException e) {
@@ -129,7 +127,7 @@ public class TestBasics {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-        ((DefaultSpamHandler) myPlugin.getSpamHandler()).checkTimes();
+        ((DefaultLegacySpamHandler) myPlugin.getSpamHandler()).checkTimes();
         
         listener.onPlayerChat(new PlayerChatEvent(player, "hello"));
         listener.onPlayerChat(new PlayerChatEvent(player, "hello"));
@@ -137,7 +135,7 @@ public class TestBasics {
         listener.onPlayerChat(new PlayerChatEvent(player, "hello"));
 
         try { 
-            Field field = DefaultSpamHandler.class.getDeclaredField("beenKicked");
+            Field field = DefaultLegacySpamHandler.class.getDeclaredField("beenKicked");
             field.setAccessible(true);
             List<OfflinePlayer> kickedPlayers = (List<OfflinePlayer>) field.get(myPlugin.getSpamHandler());
             Assert.assertTrue(kickedPlayers.contains(player));

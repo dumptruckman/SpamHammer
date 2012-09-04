@@ -3,8 +3,8 @@ package com.dumptruckman.spamhammer;
 import com.dumptruckman.minecraft.pluginbase.plugin.AbstractBukkitPlugin;
 import com.dumptruckman.minecraft.pluginbase.util.Logging;
 import com.dumptruckman.spamhammer.api.Config;
+import com.dumptruckman.spamhammer.api.LegacySpamHandler;
 import com.dumptruckman.spamhammer.api.SpamHammer;
-import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.command.SpamReset;
 import com.dumptruckman.spamhammer.command.SpamUnmute;
 import com.dumptruckman.spamhammer.util.Language;
@@ -26,7 +26,7 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
 
     private PluginListener listener;
     
-    private SpamHandler spamHandler = null;
+    private LegacySpamHandler spamHandler = null;
 
     public void preEnable() {
         Language.init();
@@ -69,9 +69,9 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
     }
 
     @Override
-    public SpamHandler getSpamHandler() {
+    public LegacySpamHandler getSpamHandler() {
         if (this.spamHandler == null) {
-            this.spamHandler = new DefaultSpamHandler(this);
+            this.spamHandler = new DefaultLegacySpamHandler(this);
         }
         return this.spamHandler;
     }

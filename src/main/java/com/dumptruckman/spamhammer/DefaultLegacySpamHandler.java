@@ -3,8 +3,8 @@ package com.dumptruckman.spamhammer;
 import com.dumptruckman.minecraft.pluginbase.locale.Messager;
 import com.dumptruckman.minecraft.pluginbase.util.MinecraftTools;
 import com.dumptruckman.spamhammer.api.Config;
+import com.dumptruckman.spamhammer.api.LegacySpamHandler;
 import com.dumptruckman.spamhammer.api.SpamHammer;
-import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
 import org.bukkit.Bukkit;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-class DefaultSpamHandler implements SpamHandler {
+class DefaultLegacySpamHandler implements LegacySpamHandler {
 
     Config config;
     Messager messager;
@@ -30,7 +30,7 @@ class DefaultSpamHandler implements SpamHandler {
     private List<OfflinePlayer> beenMuted = new ArrayList<OfflinePlayer>();
     private List<OfflinePlayer> beenKicked = new ArrayList<OfflinePlayer>();
 
-    public DefaultSpamHandler(SpamHammer<Config> plugin) {
+    public DefaultLegacySpamHandler(SpamHammer plugin) {
         this.config = plugin.config();
         this.messager = plugin.getMessager();
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {

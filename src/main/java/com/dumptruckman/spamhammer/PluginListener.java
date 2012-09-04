@@ -2,8 +2,8 @@ package com.dumptruckman.spamhammer;
 
 import com.dumptruckman.minecraft.pluginbase.locale.Messager;
 import com.dumptruckman.spamhammer.api.Config;
+import com.dumptruckman.spamhammer.api.LegacySpamHandler;
 import com.dumptruckman.spamhammer.api.SpamHammer;
-import com.dumptruckman.spamhammer.api.SpamHandler;
 import com.dumptruckman.spamhammer.util.Language;
 import com.dumptruckman.spamhammer.util.Perms;
 import org.bukkit.event.EventHandler;
@@ -25,7 +25,7 @@ public class PluginListener implements Listener {
         return plugin.config();
     }
 
-    private SpamHandler getHandler() {
+    private LegacySpamHandler getHandler() {
         return plugin.getSpamHandler();
     }
 

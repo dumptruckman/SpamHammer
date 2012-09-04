@@ -10,5 +10,5 @@ public interface SpamHammer extends BukkitPlugin<Config>, Plugin {
     
     SpoutPlugin getSpout();
     
-    SpamHandler getSpamHandler();
+    LegacySpamHandler getSpamHandler();
 }

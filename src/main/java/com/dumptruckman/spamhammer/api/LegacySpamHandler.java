@@ -2,7 +2,7 @@ package com.dumptruckman.spamhammer.api;
 
 import org.bukkit.OfflinePlayer;
 
-public interface SpamHandler {
+public interface LegacySpamHandler {
 
     boolean handleChat(OfflinePlayer player, String message);
 
