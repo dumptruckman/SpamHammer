@@ -6,10 +6,10 @@ import org.bukkit.event.player.PlayerEvent;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class AbstractSpam<T extends PlayerEvent> extends AbstractYamlConfig implements Spam<T> {
+public abstract class AbstractSpamHandler<T extends PlayerEvent> extends AbstractYamlConfig implements SpamHandler<T> {
 
 
-    public AbstractSpam(SpamHammer plugin, String name, Class configClass) throws IOException {
+    public AbstractSpamHandler(SpamHammer plugin, String name, Class configClass) throws IOException {
         super(plugin, false, true, new File(plugin.getDataFolder(), name + "-settings.yml"), configClass);
     }
 }
