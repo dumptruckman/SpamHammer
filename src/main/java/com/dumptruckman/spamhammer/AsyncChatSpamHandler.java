@@ -1,17 +1,16 @@
 package com.dumptruckman.spamhammer;
 
 import com.dumptruckman.spamhammer.api.ChatSpam;
-import com.dumptruckman.spamhammer.api.Spam;
 import com.dumptruckman.spamhammer.api.SpamHammer;
+import com.dumptruckman.spamhammer.api.SpamHistory;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.BlockingDeque;
 
 class AsyncChatSpamHandler extends ChatSpamHandler<AsyncPlayerChatEvent> {
 
-    public AsyncChatSpamHandler(SpamHammer plugin, Map<String, BlockingDeque<ChatSpam>> chatSpam) throws IOException {
+    public AsyncChatSpamHandler(SpamHammer plugin, Map<String, SpamHistory<ChatSpam>> chatSpam) throws IOException {
         super(plugin, chatSpam);
     }
 
