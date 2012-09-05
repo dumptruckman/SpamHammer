@@ -20,6 +20,7 @@ public class SpamFactory {
         }
         return playerSpam;
     }
+
     public static ChatSpam newChatSpam(String playerName, String message) {
         ChatSpam spam = new DefaultChatSpam(playerName, message);
         getPlayerSpam(playerName).add(spam);

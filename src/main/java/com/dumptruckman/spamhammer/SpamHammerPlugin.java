@@ -2,6 +2,7 @@ package com.dumptruckman.spamhammer;
 
 import com.dumptruckman.minecraft.pluginbase.plugin.AbstractBukkitPlugin;
 import com.dumptruckman.minecraft.pluginbase.util.Logging;
+import com.dumptruckman.spamhammer.api.ChatSpam;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.LegacySpamHandler;
 import com.dumptruckman.spamhammer.api.SpamHammer;
@@ -14,11 +15,10 @@ import org.getspout.spoutapi.plugin.SpoutPlugin;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.BlockingDeque;
 
-/**
- * @author dumptruckman
- */
 public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements SpamHammer {
 
     private final List<String> prefixes = Arrays.asList("spam");
@@ -44,6 +44,11 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
             this.spoutPlugin = (SpoutPlugin) plugin;
         }
         listener = new PluginListener(this);
+        try {
+            new AsyncChatSpamHandler(this, new HashMap<String, BlockingDeque<ChatSpam>>());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         getServer().getPluginManager().registerEvents(listener, this);
         registerCommands();
     }

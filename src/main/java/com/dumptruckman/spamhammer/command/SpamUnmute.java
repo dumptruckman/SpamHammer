@@ -32,9 +32,9 @@ public class SpamUnmute extends PluginCommand<SpamHammerPlugin> {
         if (plugin.getSpamHandler().isMuted(player)) {
             plugin.getSpamHandler().unMutePlayer(player);
             plugin.getSpamHandler().removeMuteHistory(player);
-            messager.good(Language.UNMUTE_COMMAND_MESSAGE_SUCCESS, sender, args.get(0));
+            getMessager().good(Language.UNMUTE_COMMAND_MESSAGE_SUCCESS, sender, args.get(0));
         } else {
-            messager.good(Language.UNMUTE_COMMAND_MESSAGE_FAILURE, sender, args.get(0));
+            getMessager().good(Language.UNMUTE_COMMAND_MESSAGE_FAILURE, sender, args.get(0));
         }
     }
 }

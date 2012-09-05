@@ -31,6 +31,6 @@ public class SpamReset extends PluginCommand<SpamHammerPlugin> {
         OfflinePlayer player = Bukkit.getOfflinePlayer(args.get(0));
         plugin.getSpamHandler().removeMuteHistory(player);
         plugin.getSpamHandler().removeKickHistory(player);
-        messager.good(Language.RESET_COMMAND_MESSAGE_SUCCESS, sender, args.get(0));
+        getMessager().good(Language.RESET_COMMAND_MESSAGE_SUCCESS, sender, args.get(0));
     }
 }
