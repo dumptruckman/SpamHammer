@@ -1,6 +1,7 @@
 package com.dumptruckman.spamhammer;
 
 import com.dumptruckman.spamhammer.api.ChatSpam;
+import com.dumptruckman.spamhammer.api.Spam;
 
 class DefaultChatSpam extends DefaultSpam implements ChatSpam {
 
@@ -14,5 +15,10 @@ class DefaultChatSpam extends DefaultSpam implements ChatSpam {
     @Override
     public String getMessage() {
         return message;
+    }
+
+    @Override
+    public boolean isDuplicate(Spam spam) {
+        return spam instanceof ChatSpam && ((ChatSpam) spam).getMessage().equals(getMessage());
     }
 }
