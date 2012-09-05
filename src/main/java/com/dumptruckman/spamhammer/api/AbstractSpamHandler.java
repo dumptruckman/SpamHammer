@@ -10,6 +10,6 @@ public abstract class AbstractSpamHandler<T extends PlayerEvent> extends Abstrac
 
 
     public AbstractSpamHandler(SpamHammer plugin, String name, Class configClass) throws IOException {
-        super(plugin, false, true, new File(plugin.getDataFolder(), name + "-settings.yml"), configClass);
+        super(plugin, true, true, new File(plugin.getDataFolder(), name + "-settings.yml"), configClass);
     }
 }
