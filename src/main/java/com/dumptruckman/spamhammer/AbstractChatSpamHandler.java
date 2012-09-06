@@ -35,11 +35,13 @@ abstract class AbstractChatSpamHandler<E extends PlayerEvent> extends AbstractSp
         SpamHistory<ChatSpam> playerSpam = getPlayerSpam(playerName);
         playerSpam.add(SpamFactory.newChatSpam(playerName, message));
 
-        final int repeatLimit = get(REPEAT_LIMIT);
-        if (playerSpam.countSequentialDuplicates(repeatLimit + 1, get(REPEAT_TIME_LIMIT).asMilliseconds()) >= repeatLimit) {
-            punish = true;
-            if (get(BLOCK_REPEATS)) {
-                cancel = true;
+        if (get(REPEAT_ENABLED)) {
+            final int repeatLimit = get(REPEAT_LIMIT);
+            if (playerSpam.countSequentialDuplicates(repeatLimit + 1, get(REPEAT_TIME_LIMIT).asMilliseconds()) >= repeatLimit) {
+                punish = true;
+                if (get(BLOCK_REPEAT_MESSAGES)) {
+                    cancel = true;
+                }
             }
         }
 
