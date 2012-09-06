@@ -21,4 +21,9 @@ abstract class DefaultSpam implements Spam {
     public String getPlayerName() {
         return playerName;
     }
+
+    @Override
+    public boolean isDuplicate(Spam spam) {
+        return spam.getPlayerName().equals(getPlayerName());
+    }
 }
