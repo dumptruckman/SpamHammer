@@ -42,7 +42,9 @@ class DefaultSpamHistory<S extends Spam> implements SpamHistory<S> {
         for (int i = historyList.size() - 1; i >= 0; i--) {
             final S current = historyList.get(i);
             if (last != null) {
-                if (mostRecentTime - current.getTime() < timeLimit && current.isDuplicate(last)) {
+                if (timeLimit != 0L && mostRecentTime - current.getTime() >= timeLimit) {
+                    break;
+                } else if (current.isDuplicate(last)) {
                     count++;
                 } else {
                     break;
