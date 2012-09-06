@@ -13,7 +13,7 @@ import java.io.IOException;
 /**
  * Commented Yaml implementation of Config.
  */
-public class YamlConfig extends AbstractYamlConfig<Config> implements Config {
+public class YamlConfig extends AbstractYamlConfig implements Config {
 
     private static final SimpleConfigEntry<Null> SETTINGS = new EntryBuilder<Null>(Null.class, "settings").comment("# === [ SpamHammer Settings ] ===").build();
 

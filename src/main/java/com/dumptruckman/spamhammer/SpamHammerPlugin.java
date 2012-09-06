@@ -6,6 +6,7 @@ import com.dumptruckman.spamhammer.api.ChatSpam;
 import com.dumptruckman.spamhammer.api.Config;
 import com.dumptruckman.spamhammer.api.LegacySpamHandler;
 import com.dumptruckman.spamhammer.api.SpamHammer;
+import com.dumptruckman.spamhammer.api.SpamHistory;
 import com.dumptruckman.spamhammer.command.SpamReset;
 import com.dumptruckman.spamhammer.command.SpamUnmute;
 import com.dumptruckman.spamhammer.util.Language;
@@ -45,7 +46,7 @@ public class SpamHammerPlugin extends AbstractBukkitPlugin<Config> implements Sp
         }
         listener = new PluginListener(this);
         try {
-            new AsyncChatSpamHandler(this, new HashMap<String, BlockingDeque<ChatSpam>>());
+            new AsyncChatSpamHandler(this, new HashMap<String, SpamHistory<ChatSpam>>());
         } catch (IOException e) {
             e.printStackTrace();
         }

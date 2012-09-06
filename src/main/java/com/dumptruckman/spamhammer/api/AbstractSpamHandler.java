@@ -9,6 +9,6 @@ import java.io.IOException;
 public abstract class AbstractSpamHandler<T extends PlayerEvent> extends AbstractYamlConfig implements SpamHandler<T> {
 
     public AbstractSpamHandler(SpamHammer plugin, String name, Class configClass) throws IOException {
-        super(plugin, true, true, new File(plugin.getDataFolder(), name + "-settings.yml"), configClass);
+        super(plugin, true, true, new File(plugin.getDataFolder(), name + "-config.yml"), configClass);
     }
 }

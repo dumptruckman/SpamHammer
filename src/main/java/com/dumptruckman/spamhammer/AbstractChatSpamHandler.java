@@ -15,7 +15,7 @@ abstract class AbstractChatSpamHandler<E extends PlayerEvent> extends AbstractSp
     protected final Map<String, SpamHistory<ChatSpam>> chatSpam;
 
     public AbstractChatSpamHandler(SpamHammer plugin, Map<String, SpamHistory<ChatSpam>> chatSpam) throws IOException {
-        super(plugin, "chat-spam", AbstractChatSpamHandler.class);
+        super(plugin, "chat-spam", ChatSpamHandler.class);
         this.chatSpam = chatSpam;
     }
 
@@ -37,8 +37,10 @@ abstract class AbstractChatSpamHandler<E extends PlayerEvent> extends AbstractSp
 
         final int repeatLimit = get(REPEAT_LIMIT);
         if (playerSpam.countSequentialDuplicates(repeatLimit + 1, get(REPEAT_TIME_LIMIT).asMilliseconds()) >= repeatLimit) {
-            cancel = true;
             punish = true;
+            if (get(BLOCK_REPEATS)) {
+                cancel = true;
+            }
         }
 
 
