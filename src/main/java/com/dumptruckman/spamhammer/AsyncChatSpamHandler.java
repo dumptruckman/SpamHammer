@@ -8,7 +8,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import java.io.IOException;
 import java.util.Map;
 
-class AsyncChatSpamHandler extends ChatSpamHandler<AsyncPlayerChatEvent> {
+class AsyncChatSpamHandler extends AbstractChatSpamHandler<AsyncPlayerChatEvent> {
 
     public AsyncChatSpamHandler(SpamHammer plugin, Map<String, SpamHistory<ChatSpam>> chatSpam) throws IOException {
         super(plugin, chatSpam);

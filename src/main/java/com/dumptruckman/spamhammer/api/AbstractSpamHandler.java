@@ -6,8 +6,7 @@ import org.bukkit.event.player.PlayerEvent;
 import java.io.File;
 import java.io.IOException;
 
-public abstract class AbstractSpamHandler<T extends PlayerEvent, C extends com.dumptruckman.minecraft.pluginbase.config.Config> extends AbstractYamlConfig<C> implements SpamHandler<T> {
-
+public abstract class AbstractSpamHandler<T extends PlayerEvent> extends AbstractYamlConfig implements SpamHandler<T> {
 
     public AbstractSpamHandler(SpamHammer plugin, String name, Class configClass) throws IOException {
         super(plugin, true, true, new File(plugin.getDataFolder(), name + "-settings.yml"), configClass);
