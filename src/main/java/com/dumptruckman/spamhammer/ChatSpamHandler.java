@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 
-abstract class ChatSpamHandler<T extends PlayerEvent> extends AbstractSpamHandler<T> {
+abstract class ChatSpamHandler<T extends PlayerEvent> extends AbstractSpamHandler<T, ChatSpamHandler> {
 
     static final SimpleConfigEntry<Boolean> ENABLED = new EntryBuilder<Boolean>(Boolean.class, "enabled")
             .def(true)
@@ -78,12 +78,18 @@ abstract class ChatSpamHandler<T extends PlayerEvent> extends AbstractSpamHandle
     }
 
     protected boolean handleChat(String playerName, String message) {
-        boolean isSpamming = false;
+        boolean cancel = false;
 
         SpamHistory<ChatSpam> playerSpam = getPlayerSpam(playerName);
         playerSpam.add(SpamFactory.newChatSpam(playerName, message));
 
-        return isSpamming;
+        final int repeatLimit = get(REPEAT_LIMIT);
+        if (playerSpam.countSequentialDuplicates(repeatLimit + 1, get(REPEAT_TIME_LIMIT).asMilliseconds()) >= repeatLimit) {
+            cancel = true;
+            // TODO Punish player
+        }
+
+        return cancel;
     }
 
     @Override
