@@ -31,25 +31,27 @@ class DefaultSpamHistory<S extends Spam> implements SpamHistory<S> {
     }
 
     @Override
-    public boolean areDuplicates(int history) {
-        final List<S> historyList = new ArrayList<S>(history);
-        for (int i = 0; i < history && !spamHistory.isEmpty(); i++) {
-            historyList.add(spamHistory.pollLast());
+    public int countSequentialDuplicates(int spamLimit, long timeLimit) {
+        final List<S> historyList = new ArrayList<S>(spamLimit);
+        for (int i = 0; i < spamLimit && !spamHistory.isEmpty(); i++) {
+            historyList.set(spamLimit - i - 1, spamHistory.pollLast());
         }
+        final long mostRecentTime = historyList.get(historyList.size() - 1).getTime();
         S last = null;
-        try {
-            for (S spam : historyList) {
-                if (last != null) {
-                    if (!last.isDuplicate(spam)) {
-                        return false;
-                    }
+        int count = 0;
+        for (int i = historyList.size() - 1; i >= 0; i--) {
+            final S current = historyList.get(i);
+            if (last != null) {
+                if (mostRecentTime - current.getTime() < timeLimit && current.isDuplicate(last)) {
+                    count++;
+                } else {
+                    break;
                 }
-                last = spam;
             }
-            return true;
-        } finally {
-            spamHistory.addAll(historyList);
+            last = current;
         }
+        spamHistory.addAll(historyList);
+        return count;
     }
 
     @Override

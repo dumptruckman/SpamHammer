@@ -6,6 +6,5 @@ public interface SpamHistory<S extends Spam> extends BlockingDeque<S> {
 
     String getPlayerName();
 
-    // TODO Fix this method, it's not gonna work.
-    boolean areDuplicates(int history);
+    int countSequentialDuplicates(int spamLimit, long timeLimit);
 }
